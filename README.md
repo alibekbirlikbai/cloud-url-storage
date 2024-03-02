@@ -3,6 +3,10 @@ inspired by - https://pastebin.com/
 
 Pastebin - приложение в котором пользователи могут создавать обычные блоки текста, сохранять их в системе, и делиться этими ссылками (текстом) с другими пользователями.
 
+Context-Diagram (initial) Проекта:
+
+![Context Diagram (initial)](https://github.com/alibekbirlikbai/Pastebin-project/assets/87764579/517dd490-5d0c-4fba-b80a-07d442a025fa)
+
 ## Info по веткам:
 - _**main**_ - _Production_ ветка, стабильные (завершенные) версии проекта
   - (только коммиты из _**release**_);
