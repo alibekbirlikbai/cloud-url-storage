@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TextBinService {
-    void saveBin(TextBin textBin);
+    String saveBin(TextBin textBin) throws IOException;
     Optional<TextBin> getBin(long id);
     List<TextBin> getAllBins();
 }

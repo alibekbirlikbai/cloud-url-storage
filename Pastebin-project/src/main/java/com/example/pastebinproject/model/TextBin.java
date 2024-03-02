@@ -12,8 +12,11 @@ public class TextBin {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column
+    @Transient
     private String textOfBin;
+
+    @Column
+    private int hashOfBin;
 
     public long getId() {
         return id;
@@ -29,5 +32,13 @@ public class TextBin {
 
     public void setTextOfBin(String textOfBin) {
         this.textOfBin = textOfBin;
+    }
+
+    public int getHashOfBin() {
+        return hashOfBin;
+    }
+
+    public void setHashOfBin(int hashOfBin) {
+        this.hashOfBin = hashOfBin;
     }
 }
