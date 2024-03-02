@@ -26,13 +26,13 @@ public class ServiceImplement implements TextBinService {
     @Override
     public String saveBin(TextBin textBin) throws IOException {
         String fileName = storeBinIntoFile(textBin);
-
-        int hashOfBin = generateHashforBin(fileName);
-        textBin.setHashOfBin(hashOfBin);
+        int hashOfBin = generateHashforBin(fileName, textBin);
+        
+        String urlForBin = generateURLforBin(hashOfBin);
 
         repository.save(textBin);
 
-        return "generated URL";
+        return urlForBin;
     }
 
     @Override
@@ -62,11 +62,17 @@ public class ServiceImplement implements TextBinService {
         return fileName;
     }
 
-    private int generateHashforBin(String fileName) {
+    private int generateHashforBin(String fileName, TextBin textBin) {
         int hashOfBin = fileName.hashCode();
+        textBin.setHashOfBin(hashOfBin);
 
         System.out.println(DevelopmentServices.consoleMessage() + "generated hashCode for this TextBin = " + hashOfBin);
 
         return hashOfBin;
+    }
+
+    private String generateURLforBin(int hashOfBin) {
+        String urlForBin = "http://localhost:8080/textBin/" + hashOfBin;
+        return urlForBin;
     }
 }

@@ -21,8 +21,9 @@ public class TextBinController {
 
     @PostMapping("/createBin")
     public String createBin(@RequestBody TextBin textBin) throws IOException {
-        service.saveBin(textBin);
-        return "Your textBin={" + textBin.getTextOfBin() + "} successfully saved in System";
+        String urlForBin = service.saveBin(textBin);
+        return "Your textBin = {" + textBin.getTextOfBin() + "} successfully saved in System" +
+                '\n' + "Url for your textBin = " + urlForBin;
     }
 
     @GetMapping("/getBin/{id}")
