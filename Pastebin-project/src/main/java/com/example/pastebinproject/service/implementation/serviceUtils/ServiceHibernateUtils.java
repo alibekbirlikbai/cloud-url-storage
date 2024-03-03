@@ -17,6 +17,9 @@ public class ServiceHibernateUtils {
     public TextBin saveOrUpdateEntity(TextBin textBin) {
         TextBin savedEntity = entityManager.merge(textBin);
         entityManager.flush();
+
+        savedEntity.setTextOfBin(textBin.getTextOfBin());
+
         return savedEntity;
     }
 }

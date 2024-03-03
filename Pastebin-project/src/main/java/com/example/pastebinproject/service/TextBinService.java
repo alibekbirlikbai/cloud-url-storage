@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface TextBinService {
     String saveBin(TextBin textBin) throws IOException;
-//    Optional<TextBin> getBinFromURL(int hashOfBin);
-//    List<String> getAllURL();
+    
 }

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class ServiceUtils {
@@ -18,8 +20,12 @@ public class ServiceUtils {
         this.hibernateUtils = hibernateUtils;
     }
 
+    public static TextBin mergeEntityAndTableValue(TextBin textBin) {
+        TextBin savedEntity = hibernateUtils.saveOrUpdateEntity(textBin);
+        return  savedEntity;
+    }
 
-    public static void storeBinIntoFile(TextBin textBin) throws IOException {
+    public static String storeBinIntoFile(TextBin textBin) throws IOException {
         if (!theDir.exists()) {
             theDir.mkdirs();
 
@@ -32,68 +38,29 @@ public class ServiceUtils {
 
         if(!file.exists()) {
             file.createNewFile();
-            System.out.println(fileName + " was created");
+            System.out.println("file=[" + fileName + "] was created");
         }
 
+        FileWriter fileWriter = new FileWriter(theDir + "/" + fileName);
+        fileWriter.write(textBin.getTextOfBin());
+        fileWriter.close();
 
+        System.out.println("{textOfBin} of file=[" + fileName + "]: " + textBin.getTextOfBin());
+
+        return fileName;
     }
 
-    public static TextBin mergeEntityAndTableValue(TextBin textBin) {
-        TextBin savedEntity = hibernateUtils.saveOrUpdateEntity(textBin);
-        return  savedEntity;
+    public static TextBin generateHashFromBin(TextBin textBin, String fileName) {
+        int hashOfBin = Objects.hashCode(fileName);
+        textBin.setHashOfBin(hashOfBin);
+
+        System.out.println("{hashOfBin} of file=[" + fileName + "]: " + hashOfBin);
+
+        return textBin;
     }
 
-
-
-
-
-//    public static String storeBinIntoFile(TextBin textBin) throws IOException {
-//        if (!theDir.exists()){
-//            theDir.mkdirs();
-//            // System.out.println("dir created, path=" + theDir.getAbsolutePath());
-//        }
-//
-//        System.out.println("(getId() start) - " + textBin.toString());
-//
-//        String fileName = textBin.getId() + ".txt";
-//
-//        System.out.println("(getId() end) - " + textBin.toString());
-//
-//        File file = new File(theDir + "/" + fileName);
-//
-//
-//        file.createNewFile();
-////        System.out.println(DevelopmentServices.consoleMessage() + "Successfully create new File: " + fileName);
-////        if (!file.exists()) {
-////            file.createNewFile();
-////            System.out.println(DevelopmentServices.consoleMessage() + "Successfully create new File: " + fileName);
-////        }
-//
-//        FileWriter fileWriter = new FileWriter(theDir + "/" + fileName);
-//        fileWriter.write(textBin.getTextOfBin());
-//        fileWriter.close();
-//
-////        System.out.println(DevelopmentServices.consoleMessage() + "Successfully wrote Text to File: " + fileName);
-//
-//        return fileName;
-//    }
-
-//    public static int generateHashforBin(String fileName, TextBin textBin) {
-//        int hashOfBin = fileName.hashCode();
-//        textBin.setHashOfBin(hashOfBin);
-//
-////        System.out.println(DevelopmentServices.consoleMessage() + "generated hashCode for this TextBin = " + hashOfBin);
-//
-//        return hashOfBin;
-//    }
-
-//    public static String generateURLforBin(int hashOfBin) {
-//        String urlForBin = "http://localhost:8080/textBin/getBin/" + hashOfBin;
-//        return urlForBin;
-//    }
-
-//    public static int getHashFromURL(int hashOfBin) {
-////        System.out.println(DevelopmentServices.consoleMessage() + "hash of Bin from URL = " + hashOfBin);
-//        return 0;
-//    }
+    public static String generateURLFromBin(TextBin textBin) {
+        String URLofBin = "http://localhost:8080/textBin/getBin/" + String.valueOf(textBin.getHashOfBin());
+        return  URLofBin;
+    }
 }

@@ -25,17 +25,9 @@ public class TextBinController {
 
         System.out.println();
 
-        return "Your textBin = {" + textBin.getTextOfBin() + "} successfully saved in System" +
-                '\n' + "Url for your textBin = " + urlForBin;
+        return "Your Bin = {" + textBin.getTextOfBin() + "} was successfully saved" +
+                '\n' + "Url of your Bin = " + urlForBin;
     }
 
-//    @GetMapping("/getBin/{hashOfBin}")
-//    public Optional<TextBin> getBin(@PathVariable int hashOfBin) {
-//        return service.getBinFromURL(hashOfBin);
-//    }
-//
-//    @GetMapping("/getBin/all")
-//    public List<String> getAllBin() {
-//        return service.getAllURL();
-//    }
+
 }

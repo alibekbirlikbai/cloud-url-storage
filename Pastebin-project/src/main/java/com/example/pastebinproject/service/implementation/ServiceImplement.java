@@ -16,8 +16,6 @@ import java.io.IOException;
 @Service
 public class ServiceImplement implements TextBinService {
     private final TextBinRepository repository;
-//    private List<String> listOfAllBins = new ArrayList<>();
-
 
     @Autowired
     public ServiceImplement(TextBinRepository repository) {
@@ -29,78 +27,13 @@ public class ServiceImplement implements TextBinService {
         // автоинкремент id объекта (merge объекта с таблицей)
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
 
-        ServiceUtils.storeBinIntoFile(textBin);
+        String fileName = ServiceUtils.storeBinIntoFile(textBin);
 
-        return null;
+        textBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+        repository.save(textBin);
+
+        String URLofBin = ServiceUtils.generateURLFromBin(textBin);
+
+        return URLofBin;
     }
-
-//    @Override
-//    public String saveBin(TextBin textBin) throws IOException {
-//        System.out.println("(SERVICE start) - " + textBin.toString());
-//
-//        String fileName = ServiceImplementUtils.storeBinIntoFile(textBin);
-//
-//
-//
-//
-//
-//
-//        int hashOfBin = ServiceImplementUtils.generateHashforBin(fileName, textBin);
-//
-//        String urlForBin = ServiceImplementUtils.generateURLforBin(hashOfBin);
-//
-//        repository.save(textBin);
-//
-//        System.out.println("(SERVICE end) - " + textBin.toString());
-//
-//        return urlForBin;
-//    }
-
-//    @Override
-//    public Optional<TextBin> getBinFromURL(int hashOfBin) {
-//        ServiceImplementUtils.getHashFromURL(hashOfBin);
-//
-//
-//        return repository.getByHashOfBin(hashOfBin);
-//    }
-//
-//    @Override
-//    public List<String> getAllURL() {
-//        List<TextBin> textBinList = (List<TextBin>) repository.findAll();
-//
-//        for (int i = 0; i < textBinList.size(); i++) {
-//            listOfAllBins.add(String.valueOf(textBinList.get(i).getHashOfBin()));
-//        }
-//        System.out.println(listOfAllBins);
-//
-//
-//        return listOfAllBins;
-//    }
-
-//    @Override
-//    public List<String> getAllURL() {
-//        List<TextBin> textBinList = (List<TextBin>) repository.findAll();
-//
-//        while(textBinList.size() < 0) {
-//
-//        }
-//
-//
-//
-//
-//        listOfAllBins = repository.getAllByHashOfBin().stream()
-//                    .map(el -> String.valueOf(el))
-//                    .collect(Collectors.toList());
-//
-//        ListIterator<String> listIterator = listOfAllBins.listIterator();
-//
-//        while(listIterator.hasNext()) {
-//            String hashOfBin = listIterator.next();
-//            listIterator.set("http://localhost:8080/textBin/getBin/" + hashOfBin);
-//        }
-//
-//        System.out.println(listOfAllBins);
-//
-//        return listOfAllBins;
-//    }
 }
