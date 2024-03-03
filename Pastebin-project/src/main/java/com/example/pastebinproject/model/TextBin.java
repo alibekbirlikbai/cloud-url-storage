@@ -41,4 +41,14 @@ public class TextBin {
     public void setHashOfBin(int hashOfBin) {
         this.hashOfBin = hashOfBin;
     }
+
+
+    @Override
+    public String toString() {
+        return "TextBin{" +
+                "id=" + id +
+                ", textOfBin='" + textOfBin + '\'' +
+                ", hashOfBin=" + hashOfBin +
+                '}';
+    }
 }

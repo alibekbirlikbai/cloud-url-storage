@@ -22,17 +22,20 @@ public class TextBinController {
     @PostMapping("/createBin")
     public String createBin(@RequestBody TextBin textBin) throws IOException {
         String urlForBin = service.saveBin(textBin);
+
+        System.out.println();
+
         return "Your textBin = {" + textBin.getTextOfBin() + "} successfully saved in System" +
                 '\n' + "Url for your textBin = " + urlForBin;
     }
 
-    @GetMapping("/getBin/{id}")
-    public Optional<TextBin> getBin(@PathVariable long id) {
-        return service.getBin(id);
-    }
-
-    @GetMapping("/getBin/all")
-    public List<TextBin> getAllBin() {
-        return service.getAllBins();
-    }
+//    @GetMapping("/getBin/{hashOfBin}")
+//    public Optional<TextBin> getBin(@PathVariable int hashOfBin) {
+//        return service.getBinFromURL(hashOfBin);
+//    }
+//
+//    @GetMapping("/getBin/all")
+//    public List<String> getAllBin() {
+//        return service.getAllURL();
+//    }
 }
