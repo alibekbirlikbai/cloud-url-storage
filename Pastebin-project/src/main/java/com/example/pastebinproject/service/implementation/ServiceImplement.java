@@ -12,10 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceImplement implements TextBinService {
     private final TextBinRepository repository;
+    private List<TextBin> listOfAllBins = new ArrayList<>();
 
     @Autowired
     public ServiceImplement(TextBinRepository repository) {
@@ -36,4 +41,19 @@ public class ServiceImplement implements TextBinService {
 
         return URLofBin;
     }
+
+    @Override
+    public Optional<TextBin> getBin(int hashOfBin) {
+        listOfAllBins = getAllBin();
+
+        List<String> listOfHash = ServiceUtils.getListOfHash(listOfAllBins);
+
+        return Optional.empty();
+    }
+
+    @Override
+    public List<TextBin> getAllBin() {
+        return (List<TextBin>) repository.findAll();
+    }
+
 }

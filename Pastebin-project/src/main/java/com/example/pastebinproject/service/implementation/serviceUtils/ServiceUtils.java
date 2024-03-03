@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class ServiceUtils {
@@ -62,5 +64,16 @@ public class ServiceUtils {
     public static String generateURLFromBin(TextBin textBin) {
         String URLofBin = "http://localhost:8080/textBin/getBin/" + String.valueOf(textBin.getHashOfBin());
         return  URLofBin;
+    }
+
+    public static List<String> getListOfHash(List<TextBin> listOfAllBins) {
+        List<String> listOfHash = listOfAllBins.stream()
+                .map(TextBin::getHashOfBin)
+                .map(el -> String.valueOf(el))
+                .collect(Collectors.toList());
+
+        System.out.println("List of ALL Available {hashOfBins}=" + listOfHash + "");
+
+        return listOfHash;
     }
 }

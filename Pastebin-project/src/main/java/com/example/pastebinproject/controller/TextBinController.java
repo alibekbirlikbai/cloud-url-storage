@@ -29,5 +29,21 @@ public class TextBinController {
                 '\n' + "Url of your Bin = " + urlForBin;
     }
 
+    @GetMapping("/getBin/{hashOfBin}")
+    public String getBin(@PathVariable int hashOfBin) {
+        Optional<TextBin> textBin = service.getBin(hashOfBin);
+
+        if (textBin.isPresent()) {
+            return "Bin from this URL = {" + textBin.get().getTextOfBin() + "}";
+        }
+
+        return "No Such Bin";
+    }
+
+    @GetMapping("/getBin/all")
+    public List<TextBin> getAllBin() {
+        return service.getAllBin();
+    }
+
 
 }
