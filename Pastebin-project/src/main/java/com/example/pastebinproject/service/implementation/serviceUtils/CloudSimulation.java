@@ -62,7 +62,7 @@ public class CloudSimulation {
 
         updateFileList();
         //log
-        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files)=" + listOfFiles);
+        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files):\n" + listOfFiles + "\n+");
 
         return listOfFiles;
     }
