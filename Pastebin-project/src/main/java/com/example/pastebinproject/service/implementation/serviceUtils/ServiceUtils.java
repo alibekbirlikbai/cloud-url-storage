@@ -96,7 +96,7 @@ public class ServiceUtils {
                 textBin.setTextOfBin(element.getValue());
 
                 //log
-                System.out.println(DevelopmentServices.consoleMessage() + hashOfBin + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + hashOfBin + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
                 System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
             }
         }

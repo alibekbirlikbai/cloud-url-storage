@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -59,9 +60,13 @@ public class TextBinController {
     }
 
     @GetMapping("/getBin/all")
-    public List<TextBin> getAllBin() {
+    public Map<Long, String> getAllBin(HttpServletRequest request) {
+        //log - Start
+        System.out.println();
+        System.out.println(request.getRequestURI());
+        System.out.println(DevelopmentServices.consoleMessage() + "invoked EndPoint={" + request.getRequestURL() + "}");
+
         return service.getAllBin();
     }
-
 
 }

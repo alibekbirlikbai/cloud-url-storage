@@ -9,14 +9,12 @@ import com.example.pastebinproject.service.implementation.serviceUtils.ServiceUt
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Text;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,15 +41,27 @@ public class ServiceImplement implements TextBinService {
 
     @Override
     public TextBin getBin(int hashOfBin) throws IOException {
-        listOfAllAvailableBins = getAllBin();
+        getAllTextBin();
         TextBin textBin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
 
         return textBin;
     }
 
     @Override
-    public List<TextBin> getAllBin() {
-        return (List<TextBin>) repository.findAll();
+    public Map<Long, String> getAllBin() {
+        Map<Long, String> listOfLinksToBins = new HashMap<>();
+        getAllTextBin();
+
+        for (TextBin textBin: listOfAllAvailableBins) {
+            listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin));
+        }
+
+        return listOfLinksToBins;
+    }
+
+    private List<TextBin> getAllTextBin() {
+        listOfAllAvailableBins = (List<TextBin>) repository.findAll();
+        return listOfAllAvailableBins;
     }
 
 }
