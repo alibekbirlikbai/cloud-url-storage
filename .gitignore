@@ -1,3 +1,8 @@
 # Ignore tasks list
 *.docx
 .idea
+.png
+(useful_Drafts).txt
+
+# Cloud Simulation (file directory)
+BinContainer (cloud simulation)
