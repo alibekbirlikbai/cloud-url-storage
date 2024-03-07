@@ -5,6 +5,7 @@ _Pastebin_ - приложение в котором пользователи м�
 
 ![Context Diagram (initial)](https://github.com/alibekbirlikbai/Pastebin-project/assets/87764579/517dd490-5d0c-4fba-b80a-07d442a025fa)
 
+---
 
 ## Features:
 _*v1.0.0 (Pastebin-project MVP)_:
@@ -23,6 +24,7 @@ _*v1.0.0 (Pastebin-project MVP)_:
 
 </details>
 
+---
 
 ## Project versions:
 > [!NOTE]
@@ -36,6 +38,7 @@ _*v1.0.0 (Pastebin-project MVP)_:
 
 [*v1.0.0 (Pastebin-project MVP)](https://github.com/alibekbirlikbai/Pastebin-project/releases/tag/v1.0.0) (Основная Документация Проекта) _(актуальная версия)_
 
+---
 
 ## Info по веткам:
 - _**main**_ - _Production_ ветка, стабильные (завершенные) версии проекта
@@ -46,6 +49,7 @@ _*v1.0.0 (Pastebin-project MVP)_:
   - (только коммиты из _**feature/***_)
 - _**feature/***_ - ветка разработки новых функционалов и улучшений
 
+---
 
 ## Инструкции для Запуска Проекта
 
