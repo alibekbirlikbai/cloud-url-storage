@@ -1,6 +1,7 @@
 package com.example.pastebinproject.controller;
 
 import com.example.pastebinproject.Utils.DevelopmentServices;
+import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
 import com.example.pastebinproject.model.TextBin;
 import com.example.pastebinproject.service.TextBinService;
 import com.example.pastebinproject.service.implementation.serviceUtils.CloudSimulation;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/textBin")
+@RequestMapping("/api/v1/pastbin")
 public class TextBinController {
     private TextBinService service;
 
@@ -24,34 +25,24 @@ public class TextBinController {
         this.service = service;
     }
 
-    @PostMapping("/createBin")
+    @PostMapping("/bins")
     public String createBin(@RequestBody TextBin textBin, HttpServletRequest request) throws IOException {
-        //log - Start
-        System.out.println();
-        System.out.println(request.getRequestURI());
-        System.out.println(DevelopmentServices.consoleMessage() + "invoked EndPoint={" + request.getRequestURL() + "}");
+        ControllerUtils.logStart(request);
 
-        String urlForBin = service.saveBin(textBin);
+        String urlForBin = service.saveBin(textBin, request);
 
-        //log - End
-        System.out.println();
-
+        ControllerUtils.logEnd();
         return "Your Bin = {" + textBin.getTextOfBin() + "} was successfully saved" +
                 '\n' + "Url of your Bin = " + urlForBin;
     }
 
-    @GetMapping("/getBin/{hashOfBin}")
+    @GetMapping("/bins/{hashOfBin}")
     public String getBin(@PathVariable int hashOfBin, HttpServletRequest request) throws IOException {
-        //log - Start
-        System.out.println();
-        System.out.println(request.getRequestURI());
-        System.out.println(DevelopmentServices.consoleMessage() + "invoked EndPoint={" + request.getRequestURL() + "}");
+        ControllerUtils.logStart(request);
 
         TextBin textBin = service.getBin(hashOfBin);
 
-        //log - End
-        System.out.println();
-
+        ControllerUtils.logEnd();
         if (textBin != null) {
             return "Bin from this URL = {" + textBin.getTextOfBin() + "}";
         }
@@ -59,14 +50,11 @@ public class TextBinController {
         return "NO such Bin".toUpperCase(Locale.ROOT);
     }
 
-    @GetMapping("/getBin/all")
+    @GetMapping("/bins")
     public Map<Long, String> getAllBin(HttpServletRequest request) {
-        //log - Start
-        System.out.println();
-        System.out.println(request.getRequestURI());
-        System.out.println(DevelopmentServices.consoleMessage() + "invoked EndPoint={" + request.getRequestURL() + "}");
+        ControllerUtils.logStart(request);
 
-        return service.getAllBin();
+        return service.getAllBin(request);
     }
 
 }

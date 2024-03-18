@@ -1,7 +1,7 @@
 # Ignore tasks list
 *.docx
 .idea
-.png
+(docs)
 (useful_Drafts).txt
 
 # Cloud Simulation (file directory)

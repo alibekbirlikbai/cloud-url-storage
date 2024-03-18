@@ -23,3 +23,4 @@ public class ServiceHibernateUtils {
         return savedEntity;
     }
 }
+

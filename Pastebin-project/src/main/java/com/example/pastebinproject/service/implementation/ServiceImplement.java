@@ -13,6 +13,7 @@ import org.w3c.dom.Text;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class ServiceImplement implements TextBinService {
     }
 
     @Override
-    public String saveBin(TextBin textBin) throws IOException {
+    public String saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
         // автоинкремент id-объекта (merge объекта с таблицей)
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
         String fileName = CloudSimulation.storeBinIntoFile(textBin);
@@ -36,7 +37,7 @@ public class ServiceImplement implements TextBinService {
 
         repository.save(textBin);
 
-        return ServiceUtils.generateURLFromBin(textBin);
+        return ServiceUtils.generateURLFromBin(textBin, request);
     }
 
     @Override
@@ -48,13 +49,16 @@ public class ServiceImplement implements TextBinService {
     }
 
     @Override
-    public Map<Long, String> getAllBin() {
+    public Map<Long, String> getAllBin(HttpServletRequest request) {
         Map<Long, String> listOfLinksToBins = new HashMap<>();
         getAllTextBin();
 
         for (TextBin textBin: listOfAllAvailableBins) {
-            listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin));
+            listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin, request));
         }
+
+        //log - End
+        System.out.println();
 
         return listOfLinksToBins;
     }

@@ -6,6 +6,7 @@ import com.example.pastebinproject.repository.TextBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,8 +42,8 @@ public class ServiceUtils {
         return textBin;
     }
 
-    public static String generateURLFromBin(TextBin textBin) {
-        String URLofBin = "http://localhost:8080/textBin/getBin/" + textBin.getHashOfBin();
+    public static String generateURLFromBin(TextBin textBin, HttpServletRequest request) {
+        String URLofBin = ServiceUtils.getBaseURL(request) + "/api/v1/pastbin/bins/" + textBin.getHashOfBin();
 
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
@@ -64,6 +65,13 @@ public class ServiceUtils {
     }
 
 
+
+    private static String getBaseURL(HttpServletRequest request) {
+        String requestUrl = request.getRequestURL().toString();
+        String baseUrl = requestUrl.replace(request.getRequestURI(), request.getContextPath());
+
+        return baseUrl;
+    }
     private static List<Integer> getListOfHash(List<TextBin> listOfAllAvailableBins) {
         List<Integer> listOfHash = listOfAllAvailableBins.stream()
                 .map(TextBin::getHashOfBin)
