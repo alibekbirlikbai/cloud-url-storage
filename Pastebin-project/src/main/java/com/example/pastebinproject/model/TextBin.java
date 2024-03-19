@@ -3,6 +3,7 @@ package com.example.pastebinproject.model;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Component
@@ -17,6 +18,9 @@ public class TextBin {
 
     @Column
     private int hashOfBin;
+
+    @Column
+    private LocalDateTime expiry_time;
 
     public long getId() {
         return id;
@@ -42,6 +46,13 @@ public class TextBin {
         this.hashOfBin = hashOfBin;
     }
 
+    public LocalDateTime getExpiry_time() {
+        return expiry_time;
+    }
+
+    public void setExpiry_time(LocalDateTime expiry_time) {
+        this.expiry_time = expiry_time;
+    }
 
     @Override
     public String toString() {

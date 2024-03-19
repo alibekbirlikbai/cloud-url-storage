@@ -40,8 +40,7 @@ public class TextBinController {
 
     @GetMapping("/bins/{hashOfBin}")
     public String getBin(@PathVariable int hashOfBin,
-                         @RequestParam("expiry_time") String expiryTime,
-                         @RequestParam("test") String test,
+                         @RequestParam(value = "expiry_time", required = true) String expiry_time,
                          HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 

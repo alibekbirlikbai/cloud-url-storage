@@ -32,12 +32,17 @@ public class ServiceImplement implements TextBinService {
     public String saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
         // автоинкремент id-объекта (merge объекта с таблицей)
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
+
+        // Симуляция сохранения контента (Bin) в Cloud
         String fileName = CloudSimulation.storeBinIntoFile(textBin);
+
         textBin = ServiceUtils.generateHashFromBin(textBin, fileName);
 
         repository.save(textBin);
 
-        return ServiceUtils.generateURLFromBin(textBin, request);
+        String URLofBin = ServiceUtils.generateURLFromBin(textBin, request);
+
+        return URLofBin;
     }
 
     @Override

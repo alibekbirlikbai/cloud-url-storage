@@ -1,10 +1,12 @@
 package com.example.pastebinproject.service.implementation.serviceUtils;
 
 import com.example.pastebinproject.Utils.DevelopmentServices;
+import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
 import com.example.pastebinproject.model.TextBin;
 import com.example.pastebinproject.repository.TextBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Text;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -43,7 +45,10 @@ public class ServiceUtils {
     }
 
     public static String generateURLFromBin(TextBin textBin, HttpServletRequest request) {
-        String URLofBin = ServiceUtils.getBaseURL(request) + "/api/v1/pastbin/bins/" + textBin.getHashOfBin();
+        String URLofBin = ServiceUtils.getBaseURL(request)
+                + request.getRequestURI()
+                + "/" + textBin.getHashOfBin()
+                + defineUrlParameters(textBin);
 
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
@@ -66,6 +71,27 @@ public class ServiceUtils {
 
 
 
+    private static String defineUrlParameters(TextBin textBin) {
+        StringBuilder parameters_String = new StringBuilder("?");
+
+        parameters_String.append("expiry_time=")
+                .append(textBin.getExpiry_time());
+
+        return parameters_String.toString();
+
+        // Сделать Потом
+//        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+//            parameters_String.append(entry.getKey())
+//                    .append("=")
+//                    .append(entry.getValue())
+//                    .append("&");
+//
+//            System.out.println(entry.getKey() + "=" + entry.getValue());
+//        }
+//        parameters_String.deleteCharAt(parameters_String.length() - 1); // Удаляем последний символ "&"
+    }
+
+    // Определяет Порт на котором запущен Сервер
     private static String getBaseURL(HttpServletRequest request) {
         String requestUrl = request.getRequestURL().toString();
         String baseUrl = requestUrl.replace(request.getRequestURI(), request.getContextPath());
