@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class TextBinController {
     }
 
     @PostMapping("/bins")
-    public String createBin(@RequestBody TextBin textBin, HttpServletRequest request) throws IOException {
+    public String createBin(@RequestBody TextBin textBin,
+                            HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
         String urlForBin = service.saveBin(textBin, request);
@@ -37,7 +39,10 @@ public class TextBinController {
     }
 
     @GetMapping("/bins/{hashOfBin}")
-    public String getBin(@PathVariable int hashOfBin, HttpServletRequest request) throws IOException {
+    public String getBin(@PathVariable int hashOfBin,
+                         @RequestParam("expiry_time") String expiryTime,
+                         @RequestParam("test") String test,
+                         HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
         TextBin textBin = service.getBin(hashOfBin);
