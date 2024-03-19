@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface TextBinService {
     String saveBin(TextBin textBin, HttpServletRequest request) throws IOException;
     TextBin getBin(int hashOfBin) throws IOException;
-    Map<Long, String> getAllBin(HttpServletRequest request);
+    Map<Long, String> getAllBins(HttpServletRequest request);
 }

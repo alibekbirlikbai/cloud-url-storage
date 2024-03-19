@@ -47,8 +47,14 @@ public class TextBinController {
         TextBin textBin = service.getBin(hashOfBin);
 
         ControllerUtils.logEnd();
+
+
         if (textBin != null) {
-            return "Bin from this URL = {" + textBin.getTextOfBin() + "}";
+            if (textBin.isExpired() == false) {
+                return "Bin from this URL = {" + textBin.getTextOfBin() + "}";
+            } else {
+                return "Link has been expired";
+            }
         }
 
         return "NO such Bin".toUpperCase(Locale.ROOT);
@@ -58,7 +64,7 @@ public class TextBinController {
     public Map<Long, String> getAllBin(HttpServletRequest request) {
         ControllerUtils.logStart(request);
 
-        return service.getAllBin(request);
+        return service.getAllBins(request);
     }
 
 }

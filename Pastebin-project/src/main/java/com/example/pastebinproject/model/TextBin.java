@@ -22,6 +22,9 @@ public class TextBin {
     @Column
     private LocalDateTime expiry_time;
 
+    @Column
+    private boolean expired = false;
+
     public long getId() {
         return id;
     }
@@ -52,6 +55,14 @@ public class TextBin {
 
     public void setExpiry_time(LocalDateTime expiry_time) {
         this.expiry_time = expiry_time;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
     @Override

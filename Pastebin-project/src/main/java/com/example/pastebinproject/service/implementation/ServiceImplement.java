@@ -47,16 +47,16 @@ public class ServiceImplement implements TextBinService {
 
     @Override
     public TextBin getBin(int hashOfBin) throws IOException {
-        getAllTextBin();
+        getAllAvailableBins();
         TextBin textBin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
 
         return textBin;
     }
 
     @Override
-    public Map<Long, String> getAllBin(HttpServletRequest request) {
+    public Map<Long, String> getAllBins(HttpServletRequest request) {
+        getAllAvailableBins();
         Map<Long, String> listOfLinksToBins = new HashMap<>();
-        getAllTextBin();
 
         for (TextBin textBin: listOfAllAvailableBins) {
             listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin, request));
@@ -68,7 +68,7 @@ public class ServiceImplement implements TextBinService {
         return listOfLinksToBins;
     }
 
-    private List<TextBin> getAllTextBin() {
+    private List<TextBin> getAllAvailableBins() {
         listOfAllAvailableBins = (List<TextBin>) repository.findAll();
         return listOfAllAvailableBins;
     }

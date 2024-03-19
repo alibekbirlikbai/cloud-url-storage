@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -62,13 +63,29 @@ public class ServiceUtils {
                 .filter(el -> el == hashOfBin)
                 .findFirst();
 
+
         if (checkResult != null) {
-            return getTextOfBin(hashOfBin);
+            TextBin textBin = getTextOfBin(hashOfBin);
+            textBin = checkURLforExpired(textBin);
+            return textBin;
         }
 
         return null;
     }
 
+
+
+    private static TextBin checkURLforExpired(TextBin textBin) {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        if (currentTime.isAfter(textBin.getExpiry_time())) {
+            textBin.setExpired(true);
+            textBinRepository.save(textBin);
+        }
+
+
+        return textBin;
+    }
 
 
     private static String defineUrlParameters(TextBin textBin) {
