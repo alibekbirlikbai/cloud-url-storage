@@ -62,9 +62,9 @@ public class ServiceUtils {
         Optional<Integer> checkResult = listOfHash.stream()
                 .filter(el -> el == hashOfBin)
                 .findFirst();
+        System.out.println("checkResult: " + checkResult);
 
-
-        if (checkResult != null) {
+        if (checkResult.isPresent()) {
             TextBin textBin = getTextOfBin(hashOfBin);
             textBin = checkURLforExpired(textBin);
             return textBin;
@@ -75,14 +75,16 @@ public class ServiceUtils {
 
 
 
-    private static TextBin checkURLforExpired(TextBin textBin) {
+    private static TextBin checkURLforExpired(TextBin textBin) throws IOException {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (currentTime.isAfter(textBin.getExpiry_time())) {
             textBin.setExpired(true);
             textBinRepository.save(textBin);
-        }
 
+            // Delete File from Cloud (file-directory)
+            // CloudSimulation.deleteExpiredBinFromCloud(textBin);
+        }
 
         return textBin;
     }
@@ -93,6 +95,8 @@ public class ServiceUtils {
 
         parameters_String.append("expiry_time=")
                 .append(textBin.getExpiry_time());
+                //.append("&");
+
 
         return parameters_String.toString();
 
@@ -132,22 +136,22 @@ public class ServiceUtils {
         // Получаем значение текста внутри файла, Хэш-код которого соответствует переданному по URL (ссылка на Bin)
         // значение инициализируется ЛОКАЛЬНО (на уровне Java),
         // (на БД поле текста Bin -> @Transient)
-        iterateThroughCloudRecords(textBin, hashOfBin);
+        iterateThroughCloudRecords(textBin);
 
         return textBin;
     }
 
-    private static void iterateThroughCloudRecords(TextBin textBin, int hashOfBin) throws IOException {
+    private static void iterateThroughCloudRecords(TextBin textBin) throws IOException {
         Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
 
         for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
             int hashOfCurrentRecord = Objects.hashCode(element.getKey());
 
-            if (hashOfCurrentRecord == hashOfBin) {
+            if (hashOfCurrentRecord == textBin.getHashOfBin()) {
                 textBin.setTextOfBin(element.getValue());
 
                 //log
-                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + hashOfBin + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + textBin.getHashOfBin() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
                 System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
             }
         }

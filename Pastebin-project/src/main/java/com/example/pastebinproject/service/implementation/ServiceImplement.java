@@ -34,7 +34,7 @@ public class ServiceImplement implements TextBinService {
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
 
         // Симуляция сохранения контента (Bin) в Cloud
-        String fileName = CloudSimulation.storeBinIntoFile(textBin);
+        String fileName = CloudSimulation.storeBinInCloud(textBin);
 
         textBin = ServiceUtils.generateHashFromBin(textBin, fileName);
 
