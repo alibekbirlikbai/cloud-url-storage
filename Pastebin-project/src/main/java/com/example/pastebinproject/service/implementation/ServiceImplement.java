@@ -29,41 +29,44 @@ public class ServiceImplement implements TextBinService {
     }
 
     @Override
-    public String saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
+    public TextBin saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
         // автоинкремент id-объекта (merge объекта с таблицей)
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
-        String fileName = CloudSimulation.storeBinIntoFile(textBin);
-        textBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+        // Симуляция сохранения контента (Bin) в Cloud
+        String fileName = CloudSimulation.storeBinInCloud(textBin);
+
+        int hashOfBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+
+        textBin.setHashOfBin(hashOfBin);
+        String URLofBin = ServiceUtils.generateURLFromBin(textBin, request);
+        textBin.setUrlOfBin(URLofBin);
 
         repository.save(textBin);
 
-        return ServiceUtils.generateURLFromBin(textBin, request);
+        return textBin;
     }
 
     @Override
     public TextBin getBin(int hashOfBin) throws IOException {
-        getAllTextBin();
+        getAllAvailableBins();
         TextBin textBin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
 
         return textBin;
     }
 
     @Override
-    public Map<Long, String> getAllBin(HttpServletRequest request) {
-        Map<Long, String> listOfLinksToBins = new HashMap<>();
-        getAllTextBin();
+    public List<TextBin> getAllBins(HttpServletRequest request) {
+        getAllAvailableBins();
 
-        for (TextBin textBin: listOfAllAvailableBins) {
-            listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin, request));
-        }
+        listOfAllAvailableBins.stream().forEach(bin -> bin.setTextOfBin("--classified--"));
 
         //log - End
         System.out.println();
 
-        return listOfLinksToBins;
+        return listOfAllAvailableBins;
     }
 
-    private List<TextBin> getAllTextBin() {
+    private List<TextBin> getAllAvailableBins() {
         listOfAllAvailableBins = (List<TextBin>) repository.findAll();
         return listOfAllAvailableBins;
     }

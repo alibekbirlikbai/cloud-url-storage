@@ -4,10 +4,7 @@ import com.example.pastebinproject.Utils.DevelopmentServices;
 import com.example.pastebinproject.model.TextBin;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class CloudSimulation {
     private static final File theDir = new File("Pastebin-project/src/main/resources/BinContainer (cloud simulation)");
@@ -15,12 +12,71 @@ public class CloudSimulation {
     private static File[] files;
 
 
-    public static String storeBinIntoFile(TextBin textBin) throws IOException {
+    public static String storeBinInCloud(TextBin textBin) throws IOException {
         String fileName = createFile(textBin);
         writeBinIntoFile(textBin, fileName);
 
         return fileName;
     }
+
+    // Достает список всех доступных файлов в Папке
+    // Ключ = (Название файла)
+    // Значение = (Текст Внутри файла)
+    public static Map<String, String> getListOfAllAvailableFiles() throws IOException {
+        if (!theDir.exists()) {
+            return null;
+        }
+
+        updateFileList();
+        //log
+        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files):\n" + listOfFiles + "\n+");
+
+        return listOfFiles;
+    }
+
+//    // ALERT! Оказывается файлы блокируются во время работы Сервера
+//    public static void deleteExpiredBinFromCloud(TextBin textBin) throws IOException {
+//        //code_DUPLICATE_FROM=ServiceUtils-iterateThroughCloudRecords(), переписать потом
+//        Map<String, String> cloudRecords = getListOfAllAvailableFiles();
+//
+//        for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
+//            int hashOfCurrentRecord = Objects.hashCode(element.getKey());
+//
+//            if (hashOfCurrentRecord == textBin.getHashOfBin()) {
+//
+//                // Так как мы не можем удалить файл во время работы сервера,
+//                // потому что сервер блокирует все файлы/директории
+//                // я делаю симуляцию удаления, а именно:
+//                // (1) переписываю название файла на - "deactivated"
+//                // +
+//                // (2) обнуляю содержимое файла
+//                deactivateBinInDir(element.getKey());
+//
+//            }
+//        }
+//
+//    }
+//
+//
+//    private static void deactivateBinInDir(String fileName) {
+//        // Создаем объект File с указанным путем и именем файла
+//        File fileToDeactivate = new File(theDir + "/" + fileName);
+//
+//        // Проверяем, существует ли файл перед удалением
+//        if (fileToDeactivate.exists()) {
+//            // (1)
+//            System.out.println("before - " + fileToDeactivate);
+//            File newFileName = new File(theDir + "/" + "deactivated.txt");
+//
+//            boolean isRenamed = fileToDeactivate.renameTo(newFileName);
+//            System.out.println("isRenamed=" + isRenamed);
+//            System.out.println("after - " + fileToDeactivate);
+//            // (2)
+//
+//        } else {
+//            System.out.println("File={" + fileName + "} not found");
+//        }
+//    }
 
     private static String createFile(TextBin textBin) throws IOException {
         if (!theDir.exists()) {
@@ -49,22 +105,6 @@ public class CloudSimulation {
 
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + textBin.getTextOfBin());
-    }
-
-
-    // Достает список всех доступных файлов в Папке
-    // Ключ = (Название файла)
-    // Значение = (Текст Внутри файла)
-    public static Map<String, String> getListOfAllAvailableFiles() throws IOException {
-        if (!theDir.exists()) {
-            return null;
-        }
-
-        updateFileList();
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files):\n" + listOfFiles + "\n+");
-
-        return listOfFiles;
     }
 
     private static String getTextFromFile(String fileName) throws IOException {

@@ -1,15 +1,18 @@
 package com.example.pastebinproject.service.implementation.serviceUtils;
 
 import com.example.pastebinproject.Utils.DevelopmentServices;
+import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
 import com.example.pastebinproject.model.TextBin;
 import com.example.pastebinproject.repository.TextBinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Text;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,21 +36,22 @@ public class ServiceUtils {
     }
 
 
-    public static TextBin generateHashFromBin(TextBin textBin, String fileName) {
+    public static int generateHashFromBin(TextBin textBin, String fileName) {
         int hashOfBin = Objects.hashCode(fileName);
-        textBin.setHashOfBin(hashOfBin);
 
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "{hashOfBin} of file=[" + fileName + "]: " + hashOfBin);
-        return textBin;
+        return hashOfBin;
     }
 
     public static String generateURLFromBin(TextBin textBin, HttpServletRequest request) {
-        String URLofBin = ServiceUtils.getBaseURL(request) + "/api/v1/pastbin/bins/" + textBin.getHashOfBin();
-
+        String URLofBin = ServiceUtils.getBaseURL(request)
+                + request.getRequestURI()
+                + "/" + textBin.getHashOfBin()
+                + defineUrlParameters(textBin);
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
-        return  URLofBin;
+        return URLofBin;
     }
 
     public static TextBin checkForBin(int hashOfBin, List<TextBin> listOfAllAvailableBins) throws IOException {
@@ -56,9 +60,12 @@ public class ServiceUtils {
         Optional<Integer> checkResult = listOfHash.stream()
                 .filter(el -> el == hashOfBin)
                 .findFirst();
+        System.out.println("checkResult: " + checkResult);
 
-        if (checkResult != null) {
-            return getTextOfBin(hashOfBin);
+        if (checkResult.isPresent()) {
+            TextBin textBin = getTextOfBin(hashOfBin);
+            textBin = checkURLforExpired(textBin);
+            return textBin;
         }
 
         return null;
@@ -66,6 +73,44 @@ public class ServiceUtils {
 
 
 
+    private static TextBin checkURLforExpired(TextBin textBin) throws IOException {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        if (currentTime.isAfter(textBin.getExpiry_time())) {
+            textBin.setExpired(true);
+            textBinRepository.save(textBin);
+
+            // Delete File from Cloud (file-directory)
+            // CloudSimulation.deleteExpiredBinFromCloud(textBin);
+        }
+
+        return textBin;
+    }
+
+
+    private static String defineUrlParameters(TextBin textBin) {
+        StringBuilder parameters_String = new StringBuilder("?");
+
+        parameters_String.append("expiry_time=")
+                .append(textBin.getExpiry_time());
+                //.append("&");
+
+
+        return parameters_String.toString();
+
+        // Сделать Потом
+//        for (Map.Entry<String, String> entry : parameters.entrySet()) {
+//            parameters_String.append(entry.getKey())
+//                    .append("=")
+//                    .append(entry.getValue())
+//                    .append("&");
+//
+//            System.out.println(entry.getKey() + "=" + entry.getValue());
+//        }
+//        parameters_String.deleteCharAt(parameters_String.length() - 1); // Удаляем последний символ "&"
+    }
+
+    // Определяет Порт на котором запущен Сервер
     private static String getBaseURL(HttpServletRequest request) {
         String requestUrl = request.getRequestURL().toString();
         String baseUrl = requestUrl.replace(request.getRequestURI(), request.getContextPath());
@@ -89,22 +134,22 @@ public class ServiceUtils {
         // Получаем значение текста внутри файла, Хэш-код которого соответствует переданному по URL (ссылка на Bin)
         // значение инициализируется ЛОКАЛЬНО (на уровне Java),
         // (на БД поле текста Bin -> @Transient)
-        iterateThroughCloudRecords(textBin, hashOfBin);
+        iterateThroughCloudRecords(textBin);
 
         return textBin;
     }
 
-    private static void iterateThroughCloudRecords(TextBin textBin, int hashOfBin) throws IOException {
+    private static void iterateThroughCloudRecords(TextBin textBin) throws IOException {
         Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
 
         for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
             int hashOfCurrentRecord = Objects.hashCode(element.getKey());
 
-            if (hashOfCurrentRecord == hashOfBin) {
+            if (hashOfCurrentRecord == textBin.getHashOfBin()) {
                 textBin.setTextOfBin(element.getValue());
 
                 //log
-                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + hashOfBin + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + textBin.getHashOfBin() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
                 System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
             }
         }
