@@ -25,6 +25,9 @@ public class TextBin {
     @Column
     private boolean expired = false;
 
+    @Column
+    private String urlOfBin;
+
     public long getId() {
         return id;
     }
@@ -65,12 +68,23 @@ public class TextBin {
         this.expired = expired;
     }
 
+    public String getUrlOfBin() {
+        return urlOfBin;
+    }
+
+    public void setUrlOfBin(String urlOfBin) {
+        this.urlOfBin = urlOfBin;
+    }
+
     @Override
     public String toString() {
         return "TextBin{" +
                 "id=" + id +
                 ", textOfBin='" + textOfBin + '\'' +
                 ", hashOfBin=" + hashOfBin +
+                ", expiry_time=" + expiry_time +
+                ", expired=" + expired +
+                ", urlOfBin='" + urlOfBin + '\'' +
                 '}';
     }
 }

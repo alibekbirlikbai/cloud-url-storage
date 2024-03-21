@@ -29,20 +29,21 @@ public class ServiceImplement implements TextBinService {
     }
 
     @Override
-    public String saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
+    public TextBin saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
         // автоинкремент id-объекта (merge объекта с таблицей)
         textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
-
         // Симуляция сохранения контента (Bin) в Cloud
         String fileName = CloudSimulation.storeBinInCloud(textBin);
 
-        textBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+        int hashOfBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+
+        textBin.setHashOfBin(hashOfBin);
+        String URLofBin = ServiceUtils.generateURLFromBin(textBin, request);
+        textBin.setUrlOfBin(URLofBin);
 
         repository.save(textBin);
 
-        String URLofBin = ServiceUtils.generateURLFromBin(textBin, request);
-
-        return URLofBin;
+        return textBin;
     }
 
     @Override
@@ -54,18 +55,15 @@ public class ServiceImplement implements TextBinService {
     }
 
     @Override
-    public Map<Long, String> getAllBins(HttpServletRequest request) {
+    public List<TextBin> getAllBins(HttpServletRequest request) {
         getAllAvailableBins();
-        Map<Long, String> listOfLinksToBins = new HashMap<>();
 
-        for (TextBin textBin: listOfAllAvailableBins) {
-            listOfLinksToBins.put(textBin.getId(), ServiceUtils.generateURLFromBin(textBin, request));
-        }
+        listOfAllAvailableBins.stream().forEach(bin -> bin.setTextOfBin("--classified--"));
 
         //log - End
         System.out.println();
 
-        return listOfLinksToBins;
+        return listOfAllAvailableBins;
     }
 
     private List<TextBin> getAllAvailableBins() {

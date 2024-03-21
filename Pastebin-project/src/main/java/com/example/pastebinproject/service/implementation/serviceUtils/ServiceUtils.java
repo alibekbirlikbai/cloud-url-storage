@@ -36,13 +36,12 @@ public class ServiceUtils {
     }
 
 
-    public static TextBin generateHashFromBin(TextBin textBin, String fileName) {
+    public static int generateHashFromBin(TextBin textBin, String fileName) {
         int hashOfBin = Objects.hashCode(fileName);
-        textBin.setHashOfBin(hashOfBin);
 
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "{hashOfBin} of file=[" + fileName + "]: " + hashOfBin);
-        return textBin;
+        return hashOfBin;
     }
 
     public static String generateURLFromBin(TextBin textBin, HttpServletRequest request) {
@@ -50,10 +49,9 @@ public class ServiceUtils {
                 + request.getRequestURI()
                 + "/" + textBin.getHashOfBin()
                 + defineUrlParameters(textBin);
-
         //log
         System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
-        return  URLofBin;
+        return URLofBin;
     }
 
     public static TextBin checkForBin(int hashOfBin, List<TextBin> listOfAllAvailableBins) throws IOException {

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface TextBinService {
-    String saveBin(TextBin textBin, HttpServletRequest request) throws IOException;
+    TextBin saveBin(TextBin textBin, HttpServletRequest request) throws IOException;
     TextBin getBin(int hashOfBin) throws IOException;
-    Map<Long, String> getAllBins(HttpServletRequest request);
+    List<TextBin> getAllBins(HttpServletRequest request);
 }

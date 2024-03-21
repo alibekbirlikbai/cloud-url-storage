@@ -31,11 +31,11 @@ public class TextBinController {
                             HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
-        String urlForBin = service.saveBin(textBin, request);
+        TextBin savedBin = service.saveBin(textBin, request);
 
         ControllerUtils.logEnd();
-        return "Your Bin = {" + textBin.getTextOfBin() + "} was successfully saved" +
-                '\n' + "Url of your Bin = " + urlForBin;
+        return "Your Bin = {" + savedBin.getTextOfBin() + "} was successfully saved" +
+                '\n' + "Url of your Bin = " + savedBin.getUrlOfBin();
     }
 
     @GetMapping("/bins/{hashOfBin}")
@@ -61,7 +61,7 @@ public class TextBinController {
     }
 
     @GetMapping("/bins")
-    public Map<Long, String> getAllBin(HttpServletRequest request) {
+    public List<TextBin> getAllBin(HttpServletRequest request) {
         ControllerUtils.logStart(request);
 
         return service.getAllBins(request);
