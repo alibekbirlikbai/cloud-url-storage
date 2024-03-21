@@ -1,7 +1,6 @@
 package com.example.pastebinproject.service.implementation.serviceUtils;
 
-import com.example.pastebinproject.model.TextBin;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.pastebinproject.model.Bin;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +13,11 @@ public class ServiceHibernateUtils {
     private EntityManager entityManager;
 
     @Transactional
-    public TextBin saveOrUpdateEntity(TextBin textBin) {
-        TextBin savedEntity = entityManager.merge(textBin);
+    public Bin saveOrUpdateEntity(Bin bin) {
+        Bin savedEntity = entityManager.merge(bin);
         entityManager.flush();
 
-        savedEntity.setTextOfBin(textBin.getTextOfBin());
+        savedEntity.setTextOfBin(bin.getTextOfBin());
 
         return savedEntity;
     }

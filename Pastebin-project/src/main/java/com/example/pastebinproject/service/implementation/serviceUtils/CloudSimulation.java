@@ -1,7 +1,7 @@
 package com.example.pastebinproject.service.implementation.serviceUtils;
 
 import com.example.pastebinproject.Utils.DevelopmentServices;
-import com.example.pastebinproject.model.TextBin;
+import com.example.pastebinproject.model.Bin;
 
 import java.io.*;
 import java.util.*;
@@ -12,9 +12,9 @@ public class CloudSimulation {
     private static File[] files;
 
 
-    public static String storeBinInCloud(TextBin textBin) throws IOException {
-        String fileName = createFile(textBin);
-        writeBinIntoFile(textBin, fileName);
+    public static String storeBinInCloud(Bin bin) throws IOException {
+        String fileName = createFile(bin);
+        writeBinIntoFile(bin, fileName);
 
         return fileName;
     }
@@ -78,7 +78,7 @@ public class CloudSimulation {
 //        }
 //    }
 
-    private static String createFile(TextBin textBin) throws IOException {
+    private static String createFile(Bin bin) throws IOException {
         if (!theDir.exists()) {
             theDir.mkdirs();
 
@@ -86,7 +86,7 @@ public class CloudSimulation {
             System.out.println(DevelopmentServices.consoleMessage()+ "dir created, path=" + theDir.getAbsolutePath());
         }
 
-        String fileName = textBin.getId() + ".txt";
+        String fileName = bin.getId() + ".txt";
         File file = new File(theDir + "/" + fileName);
 
         if(!file.exists()) {
@@ -98,13 +98,13 @@ public class CloudSimulation {
         return fileName;
     }
 
-    private static void writeBinIntoFile(TextBin textBin, String fileName) throws IOException {
+    private static void writeBinIntoFile(Bin bin, String fileName) throws IOException {
         FileWriter fileWriter = new FileWriter(theDir + "/" + fileName);
-        fileWriter.write(textBin.getTextOfBin());
+        fileWriter.write(bin.getTextOfBin());
         fileWriter.close();
 
         //log
-        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + textBin.getTextOfBin());
+        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + bin.getTextOfBin());
     }
 
     private static String getTextFromFile(String fileName) throws IOException {

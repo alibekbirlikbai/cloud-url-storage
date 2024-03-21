@@ -1,37 +1,32 @@
 package com.example.pastebinproject.controller;
 
-import com.example.pastebinproject.Utils.DevelopmentServices;
 import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
-import com.example.pastebinproject.model.TextBin;
-import com.example.pastebinproject.service.TextBinService;
-import com.example.pastebinproject.service.implementation.serviceUtils.CloudSimulation;
+import com.example.pastebinproject.model.Bin;
+import com.example.pastebinproject.service.BinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/pastbin")
-public class TextBinController {
-    private TextBinService service;
+public class BinController {
+    private BinService service;
 
     @Autowired
-    public TextBinController(TextBinService service) {
+    public BinController(BinService service) {
         this.service = service;
     }
 
     @PostMapping("/bins")
-    public String createBin(@RequestBody TextBin textBin,
+    public String createBin(@RequestBody Bin bin,
                             HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
-        TextBin savedBin = service.saveBin(textBin, request);
+        Bin savedBin = service.saveBin(bin, request);
 
         ControllerUtils.logEnd();
         return "Your Bin = {" + savedBin.getTextOfBin() + "} was successfully saved" +
@@ -44,14 +39,14 @@ public class TextBinController {
                          HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
-        TextBin textBin = service.getBin(hashOfBin);
+        Bin bin = service.getBin(hashOfBin);
 
         ControllerUtils.logEnd();
 
 
-        if (textBin != null) {
-            if (textBin.isExpired() == false) {
-                return "Bin from this URL = {" + textBin.getTextOfBin() + "}";
+        if (bin != null) {
+            if (bin.isExpired() == false) {
+                return "Bin from this URL = {" + bin.getTextOfBin() + "}";
             } else {
                 return "Link has been expired";
             }
@@ -61,7 +56,7 @@ public class TextBinController {
     }
 
     @GetMapping("/bins")
-    public List<TextBin> getAllBin(HttpServletRequest request) {
+    public List<Bin> getAllBin(HttpServletRequest request) {
         ControllerUtils.logStart(request);
 
         return service.getAllBins(request);

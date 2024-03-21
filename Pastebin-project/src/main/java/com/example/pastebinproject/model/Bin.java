@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Component
 @Entity
-public class TextBin {
+public class Bin {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;

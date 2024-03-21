@@ -1,61 +1,55 @@
 package com.example.pastebinproject.service.implementation;
 
-import com.example.pastebinproject.model.TextBin;
-import com.example.pastebinproject.repository.TextBinRepository;
-import com.example.pastebinproject.service.TextBinService;
+import com.example.pastebinproject.model.Bin;
+import com.example.pastebinproject.repository.BinRepository;
+import com.example.pastebinproject.service.BinService;
 import com.example.pastebinproject.service.implementation.serviceUtils.CloudSimulation;
-import com.example.pastebinproject.service.implementation.serviceUtils.ServiceHibernateUtils;
 import com.example.pastebinproject.service.implementation.serviceUtils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Text;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-public class ServiceImplement implements TextBinService {
-    private final TextBinRepository repository;
-    private List<TextBin> listOfAllAvailableBins = new ArrayList<>();
+public class ServiceImplement implements BinService {
+    private final BinRepository repository;
+    private List<Bin> listOfAllAvailableBins = new ArrayList<>();
 
     @Autowired
-    public ServiceImplement(TextBinRepository repository) {
+    public ServiceImplement(BinRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public TextBin saveBin(TextBin textBin, HttpServletRequest request) throws IOException {
+    public Bin saveBin(Bin bin, HttpServletRequest request) throws IOException {
         // автоинкремент id-объекта (merge объекта с таблицей)
-        textBin = ServiceUtils.mergeEntityAndTableValue(textBin);
+        bin = ServiceUtils.mergeEntityAndTableValue(bin);
         // Симуляция сохранения контента (Bin) в Cloud
-        String fileName = CloudSimulation.storeBinInCloud(textBin);
+        String fileName = CloudSimulation.storeBinInCloud(bin);
 
-        int hashOfBin = ServiceUtils.generateHashFromBin(textBin, fileName);
+        int hashOfBin = ServiceUtils.generateHashFromBin(bin, fileName);
+        bin.setHashOfBin(hashOfBin);
 
-        textBin.setHashOfBin(hashOfBin);
-        String URLofBin = ServiceUtils.generateURLFromBin(textBin, request);
-        textBin.setUrlOfBin(URLofBin);
+        String URLofBin = ServiceUtils.generateURLFromBin(bin, request);
+        bin.setUrlOfBin(URLofBin);
 
-        repository.save(textBin);
+        repository.save(bin);
 
-        return textBin;
+        return bin;
     }
 
     @Override
-    public TextBin getBin(int hashOfBin) throws IOException {
+    public Bin getBin(int hashOfBin) throws IOException {
         getAllAvailableBins();
-        TextBin textBin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
+        Bin bin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
 
-        return textBin;
+        return bin;
     }
 
     @Override
-    public List<TextBin> getAllBins(HttpServletRequest request) {
+    public List<Bin> getAllBins(HttpServletRequest request) {
         getAllAvailableBins();
 
         listOfAllAvailableBins.stream().forEach(bin -> bin.setTextOfBin("--classified--"));
@@ -66,8 +60,8 @@ public class ServiceImplement implements TextBinService {
         return listOfAllAvailableBins;
     }
 
-    private List<TextBin> getAllAvailableBins() {
-        listOfAllAvailableBins = (List<TextBin>) repository.findAll();
+    private List<Bin> getAllAvailableBins() {
+        listOfAllAvailableBins = (List<Bin>) repository.findAll();
         return listOfAllAvailableBins;
     }
 
