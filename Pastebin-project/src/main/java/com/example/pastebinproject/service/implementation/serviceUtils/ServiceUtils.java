@@ -35,8 +35,8 @@ public class ServiceUtils {
     public static int generateHashFromBin(Bin bin, String fileName) {
         int hashOfBin = Objects.hashCode(fileName);
 
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "{hashOfBin} of file=[" + fileName + "]: " + hashOfBin);
+//        //log
+//        System.out.println(DevelopmentServices.consoleMessage() + "{hashOfBin} of file=[" + fileName + "]: " + hashOfBin);
         return hashOfBin;
     }
 
@@ -45,8 +45,8 @@ public class ServiceUtils {
                 + request.getRequestURI()
                 + "/" + bin.getHashOfBin()
                 + defineUrlParameters(bin);
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
+//        //log
+//        System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
         return URLofBin;
     }
 
@@ -59,13 +59,15 @@ public class ServiceUtils {
         System.out.println("checkResult: " + checkResult);
 
         if (checkResult.isPresent()) {
-            Bin bin = getTextOfBin(hashOfBin);
+            Bin bin = getContentFromBin(hashOfBin);
             bin = checkURLforExpired(bin);
             return bin;
         }
 
         return null;
     }
+
+
 
 
 
@@ -83,7 +85,6 @@ public class ServiceUtils {
         return bin;
     }
 
-
     private static String defineUrlParameters(Bin bin) {
         StringBuilder parameters_String = new StringBuilder("?");
 
@@ -93,17 +94,6 @@ public class ServiceUtils {
 
 
         return parameters_String.toString();
-
-        // Сделать Потом
-//        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-//            parameters_String.append(entry.getKey())
-//                    .append("=")
-//                    .append(entry.getValue())
-//                    .append("&");
-//
-//            System.out.println(entry.getKey() + "=" + entry.getValue());
-//        }
-//        parameters_String.deleteCharAt(parameters_String.length() - 1); // Удаляем последний символ "&"
     }
 
     // Определяет Порт на котором запущен Сервер
@@ -118,13 +108,13 @@ public class ServiceUtils {
                 .map(Bin::getHashOfBin)
                 .collect(Collectors.toList());
 
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "List of all Available {hashOfBins} (in db):\n" + listOfHash + "\n+");
+//        //log
+//        System.out.println(DevelopmentServices.consoleMessage() + "List of all Available {hashOfBins} (in db):\n" + listOfHash + "\n+");
 
         return listOfHash;
     }
 
-    private static Bin getTextOfBin(int hashOfBin) throws IOException {
+    private static Bin getContentFromBin(int hashOfBin) throws IOException {
         Bin bin = binRepository.findByHashOfBin(hashOfBin);
 
         // Получаем значение текста внутри файла, Хэш-код которого соответствует переданному по URL (ссылка на Bin)
@@ -144,9 +134,9 @@ public class ServiceUtils {
             if (hashOfCurrentRecord == bin.getHashOfBin()) {
                 bin.setTextOfBin(element.getValue());
 
-                //log
-                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHashOfBin() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
-                System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
+//                //log
+//                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHashOfBin() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+//                System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
             }
         }
     }

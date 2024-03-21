@@ -28,15 +28,14 @@ public class CloudSimulation {
         }
 
         updateFileList();
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files):\n" + listOfFiles + "\n+");
+//        //log
+//        System.out.println(DevelopmentServices.consoleMessage() + "List of all {Records from Cloud} (files):\n" + listOfFiles + "\n+");
 
         return listOfFiles;
     }
 
 //    // ALERT! Оказывается файлы блокируются во время работы Сервера
 //    public static void deleteExpiredBinFromCloud(TextBin textBin) throws IOException {
-//        //code_DUPLICATE_FROM=ServiceUtils-iterateThroughCloudRecords(), переписать потом
 //        Map<String, String> cloudRecords = getListOfAllAvailableFiles();
 //
 //        for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
@@ -82,8 +81,8 @@ public class CloudSimulation {
         if (!theDir.exists()) {
             theDir.mkdirs();
 
-            //log
-            System.out.println(DevelopmentServices.consoleMessage()+ "dir created, path=" + theDir.getAbsolutePath());
+//            //log
+//            System.out.println(DevelopmentServices.consoleMessage()+ "dir created, path=" + theDir.getAbsolutePath());
         }
 
         String fileName = bin.getId() + ".txt";
@@ -91,8 +90,8 @@ public class CloudSimulation {
 
         if(!file.exists()) {
             file.createNewFile();
-            //log
-            System.out.println(DevelopmentServices.consoleMessage() + "file=[" + fileName + "] was created");
+//            //log
+//            System.out.println(DevelopmentServices.consoleMessage() + "file=[" + fileName + "] was created");
         }
 
         return fileName;
@@ -103,8 +102,8 @@ public class CloudSimulation {
         fileWriter.write(bin.getTextOfBin());
         fileWriter.close();
 
-        //log
-        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + bin.getTextOfBin());
+//        //log
+//        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + bin.getTextOfBin());
     }
 
     private static String getTextFromFile(String fileName) throws IOException {
