@@ -51,10 +51,13 @@ public class ServiceImplement implements BinService {
     }
 
     @Override
-    public Bin getBin(int hashOfBin) throws IOException {
+    public Bin getBin(int hashOfBin, String password) throws IOException {
         getAllAvailableBins();
         Bin bin = ServiceUtils.checkForBin(hashOfBin, listOfAllAvailableBins);
 
+        if (!ServiceUtils.checkForPassword(bin, password)) {
+            bin.setPassword_match(false);
+        }
         return bin;
     }
 
@@ -70,12 +73,12 @@ public class ServiceImplement implements BinService {
 
     @Override
     public List<Bin> searchByCategory(String category) {
-        System.out.println("listOfAllAvailableBins BEFORE: " + getAllAvailableBins() + "\n");
-
-        List<Bin> binsByCategory = ServiceUtils.checkByCategory(getAllAvailableBins(), category);
-
+        List<Bin> binsByCategory = ServiceUtils.getByCategory(getAllAvailableBins(), category);
         return binsByCategory;
     }
+
+
+
 
 
     private List<Bin> getAllAvailableBins() {

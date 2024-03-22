@@ -56,7 +56,6 @@ public class ServiceUtils {
         Optional<Integer> checkResult = listOfHash.stream()
                 .filter(el -> el == hashOfBin)
                 .findFirst();
-        System.out.println("checkResult: " + checkResult);
 
         if (checkResult.isPresent()) {
             Bin bin = getContentFromBin(hashOfBin);
@@ -67,14 +66,17 @@ public class ServiceUtils {
         return null;
     }
 
-    public static List<Bin> checkByCategory(List<Bin> listOfAllAvailableBins, String category) {
-
-        System.out.println("listOfAllAvailableBins AFTER: " + listOfAllAvailableBins + "\n");
-
+    public static List<Bin> getByCategory(List<Bin> listOfAllAvailableBins, String category) {
         List<Bin> binsByCategory = listOfAllAvailableBins.stream().filter(bin -> bin.getCategory().equals(category)).collect(Collectors.toList());
-
-        System.out.println("binsByCategory:" + binsByCategory);
         return binsByCategory;
+    }
+
+    public static boolean checkForPassword(Bin bin, String password) {
+        if (bin.getPassword() == null || bin.getPassword().equals(password)) {
+            return true;
+        }
+
+        return false;
     }
 
 

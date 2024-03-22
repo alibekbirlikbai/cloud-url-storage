@@ -35,17 +35,16 @@ public class BinController {
         try {
             Bin savedBin = service.saveBin(bin, request);
             stringResponse.append("Your Bin was successfully saved!")
-                    .append("\n\n[")
-                    .append("Content = " + savedBin.getContent())
                     .append('\n')
-                    .append("URL = " + savedBin.getURL())
+                    .append("[Content] = " + savedBin.getContent())
                     .append('\n')
-                    .append("URL expire at = " + savedBin.getExpiry_time())
+                    .append("[URL] = " + savedBin.getURL())
                     .append('\n')
-                    .append("URL password = " + savedBin.getPassword())
-                    .append("\n]")
-                    .append("Category = " + savedBin.getCategory())
-                    .append("\n]");
+                    .append("[URL expire at] = " + savedBin.getExpiry_time())
+                    .append('\n')
+                    .append("[URL password] = " + savedBin.getPassword())
+                    .append('\n')
+                    .append("[Category] = " + savedBin.getCategory());
 
             ControllerUtils.logEnd();
             return ResponseEntity.ok(stringResponse);
@@ -59,18 +58,21 @@ public class BinController {
     @GetMapping("/bins/{hashOfBin}")
     public String getBin(@PathVariable int hashOfBin,
                          @RequestParam(value = "expiry_time", required = true) String expiry_time,
+                         @RequestParam(value = "password", required = false) String password,
                          HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
-        Bin bin = service.getBin(hashOfBin);
+        Bin bin = service.getBin(hashOfBin, password);
 
         ControllerUtils.logEnd();
 
         if (bin != null) {
             if (bin.isExpired() == false) {
                 return "Bin from this URL = {" + bin.getContent() + "}";
+            } else if (bin.isPassword_match() == false) {
+                return "--This URL is has password--";
             } else {
-                return "Link has been expired";
+                return "*Link has been expired";
             }
         }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BinService {
     Bin saveBin(Bin bin, HttpServletRequest request) throws IOException;
-    Bin getBin(int hashOfBin) throws IOException;
+    Bin getBin(int hashOfBin, String password) throws IOException;
     List<Bin> getAllBins();
     List<Bin> searchByCategory(String category);
 }

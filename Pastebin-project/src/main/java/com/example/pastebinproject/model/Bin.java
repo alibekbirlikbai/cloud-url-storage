@@ -34,6 +34,9 @@ public class Bin {
     @Column
     private String password;
 
+    @Transient
+    private boolean password_match = true;
+
     public long getId() {
         return id;
     }
@@ -96,6 +99,14 @@ public class Bin {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isPassword_match() {
+        return password_match;
+    }
+
+    public void setPassword_match(boolean password_match) {
+        this.password_match = password_match;
     }
 
     @Override
