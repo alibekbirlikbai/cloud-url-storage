@@ -75,7 +75,7 @@ public class ServiceImplement implements BinService {
 
     private boolean isValidBin(Bin bin) {
         // Проверка всех полей объекта bin на наличие некорректных значений
-        return bin != null && bin.getContent() != null && bin.getExpiry_time() != null;
+        return bin != null && bin.getContent() != null && bin.getExpiry_time() != null && bin.getCategory() != null;
     }
 
 

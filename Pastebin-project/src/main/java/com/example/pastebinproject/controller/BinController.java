@@ -27,15 +27,22 @@ public class BinController {
 
     @PostMapping("/bins")
     public ResponseEntity<?> createBin(@RequestBody Bin bin,
-                            HttpServletRequest request) throws IOException {
+                            HttpServletRequest request) {
         ControllerUtils.logStart(request);
+        StringBuilder stringResponse = new StringBuilder();
 
         try {
             Bin savedBin = service.saveBin(bin, request);
+            stringResponse.append("Your Bin was successfully saved")
+                    .append('\n')
+                    .append("Content = " + savedBin.getContent())
+                    .append('\n')
+                    .append("URL = " + savedBin.getURL())
+                    .append('\n')
+                    .append("Category = " + savedBin.getCategory());
 
             ControllerUtils.logEnd();
-            return ResponseEntity.ok("Your Bin = {" + savedBin.getContent() + "} was successfully saved" +
-                    '\n' + "Url of your Bin = " + savedBin.getURL());
+            return ResponseEntity.ok(stringResponse);
         } catch (IOException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сохранения записи в базе данных");
         }
@@ -50,7 +57,6 @@ public class BinController {
         Bin bin = service.getBin(hashOfBin);
 
         ControllerUtils.logEnd();
-
 
         if (bin != null) {
             if (bin.isExpired() == false) {

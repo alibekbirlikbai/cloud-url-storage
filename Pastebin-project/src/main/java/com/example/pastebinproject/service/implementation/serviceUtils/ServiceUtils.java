@@ -71,7 +71,7 @@ public class ServiceUtils {
 
 
 
-    private static Bin checkURLforExpired(Bin bin) throws IOException {
+    private static Bin checkURLforExpired(Bin bin) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (currentTime.isAfter(bin.getExpiry_time())) {
@@ -89,9 +89,11 @@ public class ServiceUtils {
         StringBuilder parameters_String = new StringBuilder("?");
 
         parameters_String.append("expiry_time=")
-                .append(bin.getExpiry_time());
-                //.append("&");
-
+                .append(bin.getExpiry_time())
+                .append("&")
+                .append("category=")
+                .append(bin.getCategory());
+                //.append("&")
 
         return parameters_String.toString();
     }

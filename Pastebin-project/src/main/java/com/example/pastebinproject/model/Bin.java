@@ -28,6 +28,9 @@ public class Bin {
     @Column
     private String URL;
 
+    @Column
+    private String category;
+
     public long getId() {
         return id;
     }
@@ -76,6 +79,14 @@ public class Bin {
         this.URL = URL;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Bin{" +
@@ -85,6 +96,7 @@ public class Bin {
                 ", expiry_time=" + expiry_time +
                 ", expired=" + expired +
                 ", URL='" + URL + '\'' +
+                ", category='" + category + '\'' +
                 '}';
     }
 }
