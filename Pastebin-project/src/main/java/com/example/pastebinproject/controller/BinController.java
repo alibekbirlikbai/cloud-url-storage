@@ -42,6 +42,8 @@ public class BinController {
                     .append('\n')
                     .append("URL expire at = " + savedBin.getExpiry_time())
                     .append('\n')
+                    .append("URL password = " + savedBin.getPassword())
+                    .append("\n]")
                     .append("Category = " + savedBin.getCategory())
                     .append("\n]");
 

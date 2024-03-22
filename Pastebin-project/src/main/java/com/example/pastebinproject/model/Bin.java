@@ -31,6 +31,9 @@ public class Bin {
     @Column
     private String category;
 
+    @Column
+    private String password;
+
     public long getId() {
         return id;
     }
@@ -87,6 +90,14 @@ public class Bin {
         this.category = category;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Bin{" +
@@ -97,6 +108,7 @@ public class Bin {
                 ", expired=" + expired +
                 ", URL='" + URL + '\'' +
                 ", category='" + category + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
