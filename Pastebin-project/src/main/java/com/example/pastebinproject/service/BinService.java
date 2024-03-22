@@ -9,5 +9,6 @@ import java.util.List;
 public interface BinService {
     Bin saveBin(Bin bin, HttpServletRequest request) throws IOException;
     Bin getBin(int hashOfBin) throws IOException;
-    List<Bin> getAllBins(HttpServletRequest request);
+    List<Bin> getAllBins();
+    List<Bin> searchByCategory(String category);
 }

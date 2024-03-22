@@ -59,10 +59,8 @@ public class ServiceImplement implements BinService {
     }
 
     @Override
-    public List<Bin> getAllBins(HttpServletRequest request) {
+    public List<Bin> getAllBins() {
         getAllAvailableBins();
-
-        listOfAllAvailableBins.stream().forEach(bin -> bin.setContent("--classified--"));
 
         //log - End
         System.out.println();
@@ -70,12 +68,22 @@ public class ServiceImplement implements BinService {
         return listOfAllAvailableBins;
     }
 
-    private List<Bin> getAllAvailableBins() {
-        listOfAllAvailableBins = (List<Bin>) repository.findAll();
-        return listOfAllAvailableBins;
+    @Override
+    public List<Bin> searchByCategory(String category) {
+        System.out.println("listOfAllAvailableBins BEFORE: " + getAllAvailableBins() + "\n");
+
+        List<Bin> binsByCategory = ServiceUtils.checkByCategory(getAllAvailableBins(), category);
+
+        return binsByCategory;
     }
 
 
+    private List<Bin> getAllAvailableBins() {
+        listOfAllAvailableBins = (List<Bin>) repository.findAll();
+        listOfAllAvailableBins.stream().forEach(bin -> bin.setContent("--classified--"));
+
+        return listOfAllAvailableBins;
+    }
 
     private boolean isValidBin(Bin bin) {
         // Проверка всех полей объекта bin на наличие некорректных значений

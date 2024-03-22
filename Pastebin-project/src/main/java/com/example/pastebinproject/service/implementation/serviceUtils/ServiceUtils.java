@@ -67,6 +67,16 @@ public class ServiceUtils {
         return null;
     }
 
+    public static List<Bin> checkByCategory(List<Bin> listOfAllAvailableBins, String category) {
+
+        System.out.println("listOfAllAvailableBins AFTER: " + listOfAllAvailableBins + "\n");
+
+        List<Bin> binsByCategory = listOfAllAvailableBins.stream().filter(bin -> bin.getCategory().equals(category)).collect(Collectors.toList());
+
+        System.out.println("binsByCategory:" + binsByCategory);
+        return binsByCategory;
+    }
+
 
 
 

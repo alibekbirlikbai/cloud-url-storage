@@ -35,12 +35,15 @@ public class BinController {
         try {
             Bin savedBin = service.saveBin(bin, request);
             stringResponse.append("Your Bin was successfully saved!")
-                    .append('\n')
+                    .append("\n\n[")
                     .append("Content = " + savedBin.getContent())
                     .append('\n')
                     .append("URL = " + savedBin.getURL())
                     .append('\n')
-                    .append("Category = " + savedBin.getCategory());
+                    .append("URL expire at = " + savedBin.getExpiry_time())
+                    .append('\n')
+                    .append("Category = " + savedBin.getCategory())
+                    .append("\n]");
 
             ControllerUtils.logEnd();
             return ResponseEntity.ok(stringResponse);
@@ -76,7 +79,15 @@ public class BinController {
     public List<Bin> getAllBin(HttpServletRequest request) {
         ControllerUtils.logStart(request);
 
-        return service.getAllBins(request);
+        return service.getAllBins();
+    }
+
+    @GetMapping("/bins/category/{category}")
+    public List<Bin> searchByCategory(@PathVariable String category,
+                                      HttpServletRequest request) {
+        ControllerUtils.logStart(request);
+
+        return service.searchByCategory(category);
     }
 
 }
