@@ -1,6 +1,8 @@
 package com.example.pastebinproject.service.implementation;
 
+import com.example.pastebinproject.exception.BinCategoryException;
 import com.example.pastebinproject.model.Bin;
+import com.example.pastebinproject.model.BinCategory;
 import com.example.pastebinproject.repository.BinRepository;
 import com.example.pastebinproject.service.BinService;
 import com.example.pastebinproject.service.implementation.serviceUtils.CloudSimulation;
@@ -26,7 +28,7 @@ public class ServiceImplement implements BinService {
 
     @Override
     public Bin saveBin(Bin bin, HttpServletRequest request) throws IOException {
-        if (isValidBin(bin)) {
+        if (isValidBin(bin) && isCategoryValid(bin)) {
             // автоинкремент id-объекта (merge объекта с таблицей)
             bin = ServiceUtils.mergeEntityAndTableValue(bin);
             // Симуляция сохранения контента (Bin) в Cloud
@@ -39,6 +41,8 @@ public class ServiceImplement implements BinService {
             bin.setURL(URLofBin);
 
             repository.save(bin);
+        } else if (!isCategoryValid(bin)) {
+            throw new BinCategoryException("Invalid bin category");
         } else {
             throw new IOException("Некорректные данные для сохранения в базе данных");
         }
@@ -78,5 +82,14 @@ public class ServiceImplement implements BinService {
         return bin != null && bin.getContent() != null && bin.getExpiry_time() != null && bin.getCategory() != null;
     }
 
+    private boolean isCategoryValid(Bin bin) {
+        String binCategory = bin.getCategory();
 
+        for (BinCategory category : BinCategory.values()) {
+            if (binCategory.equals(category.toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

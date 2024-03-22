@@ -1,6 +1,7 @@
 package com.example.pastebinproject.controller;
 
 import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
+import com.example.pastebinproject.exception.BinCategoryException;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.service.BinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class BinController {
 
         try {
             Bin savedBin = service.saveBin(bin, request);
-            stringResponse.append("Your Bin was successfully saved")
+            stringResponse.append("Your Bin was successfully saved!")
                     .append('\n')
                     .append("Content = " + savedBin.getContent())
                     .append('\n')
@@ -45,6 +46,8 @@ public class BinController {
             return ResponseEntity.ok(stringResponse);
         } catch (IOException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сохранения записи в базе данных");
+        } catch (BinCategoryException customException) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Несуществующая Категория");
         }
     }
 
