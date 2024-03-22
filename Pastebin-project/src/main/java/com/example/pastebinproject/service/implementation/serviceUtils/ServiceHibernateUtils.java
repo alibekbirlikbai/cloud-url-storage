@@ -17,7 +17,7 @@ public class ServiceHibernateUtils {
         Bin savedEntity = entityManager.merge(bin);
         entityManager.flush();
 
-        savedEntity.setTextOfBin(bin.getTextOfBin());
+        savedEntity.setContent(bin.getContent());
 
         return savedEntity;
     }

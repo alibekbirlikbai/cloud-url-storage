@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BinRepository extends CrudRepository<Bin, Long> {
-    Bin findByHashOfBin(int hashOfBin);
+    Bin findByHash(int hashOfBin);
 }

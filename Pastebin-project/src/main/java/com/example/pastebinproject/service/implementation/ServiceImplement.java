@@ -33,10 +33,10 @@ public class ServiceImplement implements BinService {
             String fileName = CloudSimulation.storeBinInCloud(bin);
 
             int hashOfBin = ServiceUtils.generateHashFromBin(bin, fileName);
-            bin.setHashOfBin(hashOfBin);
+            bin.setHash(hashOfBin);
 
             String URLofBin = ServiceUtils.generateURLFromBin(bin, request);
-            bin.setUrlOfBin(URLofBin);
+            bin.setURL(URLofBin);
 
             repository.save(bin);
         } else {
@@ -58,7 +58,7 @@ public class ServiceImplement implements BinService {
     public List<Bin> getAllBins(HttpServletRequest request) {
         getAllAvailableBins();
 
-        listOfAllAvailableBins.stream().forEach(bin -> bin.setTextOfBin("--classified--"));
+        listOfAllAvailableBins.stream().forEach(bin -> bin.setContent("--classified--"));
 
         //log - End
         System.out.println();
@@ -75,6 +75,8 @@ public class ServiceImplement implements BinService {
 
     private boolean isValidBin(Bin bin) {
         // Проверка всех полей объекта bin на наличие некорректных значений
-        return bin != null && bin.getTextOfBin() != null && bin.getExpiry_time() != null;
+        return bin != null && bin.getContent() != null && bin.getExpiry_time() != null;
     }
+
+
 }

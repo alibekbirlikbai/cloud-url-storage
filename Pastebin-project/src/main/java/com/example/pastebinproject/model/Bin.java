@@ -14,10 +14,10 @@ public class Bin {
     private long id;
 
     @Transient
-    private String textOfBin;
+    private String content;
 
     @Column
-    private int hashOfBin;
+    private int hash;
 
     @Column
     private LocalDateTime expiry_time;
@@ -26,7 +26,7 @@ public class Bin {
     private boolean expired = false;
 
     @Column
-    private String urlOfBin;
+    private String URL;
 
     public long getId() {
         return id;
@@ -36,20 +36,20 @@ public class Bin {
         this.id = id;
     }
 
-    public String getTextOfBin() {
-        return textOfBin;
+    public String getContent() {
+        return content;
     }
 
-    public void setTextOfBin(String textOfBin) {
-        this.textOfBin = textOfBin;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public int getHashOfBin() {
-        return hashOfBin;
+    public int getHash() {
+        return hash;
     }
 
-    public void setHashOfBin(int hashOfBin) {
-        this.hashOfBin = hashOfBin;
+    public void setHash(int hash) {
+        this.hash = hash;
     }
 
     public LocalDateTime getExpiry_time() {
@@ -68,23 +68,23 @@ public class Bin {
         this.expired = expired;
     }
 
-    public String getUrlOfBin() {
-        return urlOfBin;
+    public String getURL() {
+        return URL;
     }
 
-    public void setUrlOfBin(String urlOfBin) {
-        this.urlOfBin = urlOfBin;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
     @Override
     public String toString() {
-        return "TextBin{" +
+        return "Bin{" +
                 "id=" + id +
-                ", textOfBin='" + textOfBin + '\'' +
-                ", hashOfBin=" + hashOfBin +
+                ", content='" + content + '\'' +
+                ", hash=" + hash +
                 ", expiry_time=" + expiry_time +
                 ", expired=" + expired +
-                ", urlOfBin='" + urlOfBin + '\'' +
+                ", URL='" + URL + '\'' +
                 '}';
     }
 }

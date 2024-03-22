@@ -43,7 +43,7 @@ public class ServiceUtils {
     public static String generateURLFromBin(Bin bin, HttpServletRequest request) {
         String URLofBin = ServiceUtils.getBaseURL(request)
                 + request.getRequestURI()
-                + "/" + bin.getHashOfBin()
+                + "/" + bin.getHash()
                 + defineUrlParameters(bin);
 //        //log
 //        System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
@@ -105,7 +105,7 @@ public class ServiceUtils {
     }
     private static List<Integer> getListOfHash(List<Bin> listOfAllAvailableBins) {
         List<Integer> listOfHash = listOfAllAvailableBins.stream()
-                .map(Bin::getHashOfBin)
+                .map(Bin::getHash)
                 .collect(Collectors.toList());
 
 //        //log
@@ -115,7 +115,7 @@ public class ServiceUtils {
     }
 
     private static Bin getContentFromBin(int hashOfBin) throws IOException {
-        Bin bin = binRepository.findByHashOfBin(hashOfBin);
+        Bin bin = binRepository.findByHash(hashOfBin);
 
         // Получаем значение текста внутри файла, Хэш-код которого соответствует переданному по URL (ссылка на Bin)
         // значение инициализируется ЛОКАЛЬНО (на уровне Java),
@@ -131,11 +131,11 @@ public class ServiceUtils {
         for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
             int hashOfCurrentRecord = Objects.hashCode(element.getKey());
 
-            if (hashOfCurrentRecord == bin.getHashOfBin()) {
-                bin.setTextOfBin(element.getValue());
+            if (hashOfCurrentRecord == bin.getHash()) {
+                bin.setContent(element.getValue());
 
 //                //log
-//                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHashOfBin() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+//                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHash() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
 //                System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
             }
         }

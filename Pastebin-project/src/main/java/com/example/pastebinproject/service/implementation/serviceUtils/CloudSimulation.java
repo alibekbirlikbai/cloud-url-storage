@@ -99,11 +99,11 @@ public class CloudSimulation {
 
     private static void writeBinIntoFile(Bin bin, String fileName) throws IOException {
         FileWriter fileWriter = new FileWriter(theDir + "/" + fileName);
-        fileWriter.write(bin.getTextOfBin());
+        fileWriter.write(bin.getContent());
         fileWriter.close();
 
 //        //log
-//        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + bin.getTextOfBin());
+//        System.out.println(DevelopmentServices.consoleMessage() + "{textOfBin} of file=[" + fileName + "]: " + bin.getContent());
     }
 
     private static String getTextFromFile(String fileName) throws IOException {

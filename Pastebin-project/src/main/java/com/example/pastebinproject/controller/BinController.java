@@ -34,8 +34,8 @@ public class BinController {
             Bin savedBin = service.saveBin(bin, request);
 
             ControllerUtils.logEnd();
-            return ResponseEntity.ok("Your Bin = {" + savedBin.getTextOfBin() + "} was successfully saved" +
-                    '\n' + "Url of your Bin = " + savedBin.getUrlOfBin());
+            return ResponseEntity.ok("Your Bin = {" + savedBin.getContent() + "} was successfully saved" +
+                    '\n' + "Url of your Bin = " + savedBin.getURL());
         } catch (IOException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сохранения записи в базе данных");
         }
@@ -54,7 +54,7 @@ public class BinController {
 
         if (bin != null) {
             if (bin.isExpired() == false) {
-                return "Bin from this URL = {" + bin.getTextOfBin() + "}";
+                return "Bin from this URL = {" + bin.getContent() + "}";
             } else {
                 return "Link has been expired";
             }
