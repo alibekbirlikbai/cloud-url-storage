@@ -57,7 +57,6 @@ public class BinController {
 
     @GetMapping("/bins/{hashOfBin}")
     public String getBin(@PathVariable int hashOfBin,
-                         @RequestParam(value = "expiry_time", required = true) String expiry_time,
                          @RequestParam(value = "password", required = false) String password,
                          HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
@@ -67,7 +66,7 @@ public class BinController {
         ControllerUtils.logEnd();
 
         if (bin != null) {
-            if (bin.isExpired() == false) {
+            if (bin.isExpired() == false && bin.isPassword_match() == true) {
                 return "Bin from this URL = {" + bin.getContent() + "}";
             } else if (bin.isPassword_match() == false) {
                 return "--This URL is has password--";

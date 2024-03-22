@@ -40,6 +40,9 @@ public class ServiceImplement implements BinService {
             String URLofBin = ServiceUtils.generateURLFromBin(bin, request);
             bin.setURL(URLofBin);
 
+            String passwordPretty = ServiceUtils.makePasswordPretty(bin);
+            bin.setPassword(passwordPretty);
+
             repository.save(bin);
         } else if (!isCategoryValid(bin)) {
             throw new BinCategoryException("Invalid bin category");

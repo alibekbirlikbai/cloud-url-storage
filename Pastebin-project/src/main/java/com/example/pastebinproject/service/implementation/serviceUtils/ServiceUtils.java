@@ -43,8 +43,8 @@ public class ServiceUtils {
     public static String generateURLFromBin(Bin bin, HttpServletRequest request) {
         String URLofBin = ServiceUtils.getBaseURL(request)
                 + request.getRequestURI()
-                + "/" + bin.getHash()
-                + defineUrlParameters(bin);
+                + "/" + bin.getHash();
+                //+ defineUrlParameters(bin);
 //        //log
 //        System.out.println(DevelopmentServices.consoleMessage() + "URL generated for this Bin =[" + URLofBin + "]");
         return URLofBin;
@@ -79,6 +79,10 @@ public class ServiceUtils {
         return false;
     }
 
+    public static String makePasswordPretty(Bin bin) {
+        return bin.getPassword().replace(" ", "_");
+    }
+
 
 
 
@@ -97,18 +101,18 @@ public class ServiceUtils {
         return bin;
     }
 
-    private static String defineUrlParameters(Bin bin) {
-        StringBuilder parameters_String = new StringBuilder("?");
-
-        parameters_String.append("expiry_time=")
-                .append(bin.getExpiry_time())
-                .append("&")
-                .append("category=")
-                .append(bin.getCategory());
-                //.append("&")
-
-        return parameters_String.toString();
-    }
+//    private static String defineUrlParameters(Bin bin) {
+//        StringBuilder parameters_String = new StringBuilder("?");
+//
+//        parameters_String.append("expiry_time=")
+//                .append(bin.getExpiry_time())
+//                .append("&")
+//                .append("category=")
+//                .append(bin.getCategory());
+//                //.append("&")
+//
+//        return parameters_String.toString();
+//    }
 
     // Определяет Порт на котором запущен Сервер
     private static String getBaseURL(HttpServletRequest request) {
