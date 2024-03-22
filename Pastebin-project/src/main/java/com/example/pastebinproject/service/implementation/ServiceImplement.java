@@ -6,6 +6,8 @@ import com.example.pastebinproject.service.BinService;
 import com.example.pastebinproject.service.implementation.serviceUtils.CloudSimulation;
 import com.example.pastebinproject.service.implementation.serviceUtils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,18 +26,22 @@ public class ServiceImplement implements BinService {
 
     @Override
     public Bin saveBin(Bin bin, HttpServletRequest request) throws IOException {
-        // автоинкремент id-объекта (merge объекта с таблицей)
-        bin = ServiceUtils.mergeEntityAndTableValue(bin);
-        // Симуляция сохранения контента (Bin) в Cloud
-        String fileName = CloudSimulation.storeBinInCloud(bin);
+        if (isValidBin(bin)) {
+            // автоинкремент id-объекта (merge объекта с таблицей)
+            bin = ServiceUtils.mergeEntityAndTableValue(bin);
+            // Симуляция сохранения контента (Bin) в Cloud
+            String fileName = CloudSimulation.storeBinInCloud(bin);
 
-        int hashOfBin = ServiceUtils.generateHashFromBin(bin, fileName);
-        bin.setHashOfBin(hashOfBin);
+            int hashOfBin = ServiceUtils.generateHashFromBin(bin, fileName);
+            bin.setHashOfBin(hashOfBin);
 
-        String URLofBin = ServiceUtils.generateURLFromBin(bin, request);
-        bin.setUrlOfBin(URLofBin);
+            String URLofBin = ServiceUtils.generateURLFromBin(bin, request);
+            bin.setUrlOfBin(URLofBin);
 
-        repository.save(bin);
+            repository.save(bin);
+        } else {
+            throw new IOException("Некорректные данные для сохранения в базе данных");
+        }
 
         return bin;
     }
@@ -65,4 +71,10 @@ public class ServiceImplement implements BinService {
         return listOfAllAvailableBins;
     }
 
+
+
+    private boolean isValidBin(Bin bin) {
+        // Проверка всех полей объекта bin на наличие некорректных значений
+        return bin != null && bin.getTextOfBin() != null && bin.getExpiry_time() != null;
+    }
 }

@@ -4,6 +4,10 @@ import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.service.BinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +26,19 @@ public class BinController {
     }
 
     @PostMapping("/bins")
-    public String createBin(@RequestBody Bin bin,
+    public ResponseEntity<?> createBin(@RequestBody Bin bin,
                             HttpServletRequest request) throws IOException {
         ControllerUtils.logStart(request);
 
-        Bin savedBin = service.saveBin(bin, request);
+        try {
+            Bin savedBin = service.saveBin(bin, request);
 
-        ControllerUtils.logEnd();
-        return "Your Bin = {" + savedBin.getTextOfBin() + "} was successfully saved" +
-                '\n' + "Url of your Bin = " + savedBin.getUrlOfBin();
+            ControllerUtils.logEnd();
+            return ResponseEntity.ok("Your Bin = {" + savedBin.getTextOfBin() + "} was successfully saved" +
+                    '\n' + "Url of your Bin = " + savedBin.getUrlOfBin());
+        } catch (IOException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сохранения записи в базе данных");
+        }
     }
 
     @GetMapping("/bins/{hashOfBin}")
