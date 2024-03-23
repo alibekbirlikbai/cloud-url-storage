@@ -69,7 +69,7 @@ public class BinController {
             if (bin.isExpired() == false && bin.isPassword_match() == true) {
                 return "Bin from this URL = {" + bin.getContent() + "}";
             } else if (bin.isPassword_match() == false) {
-                return "--This URL is has password--";
+                return "--This URL has password--";
             } else {
                 return "*Link has been expired";
             }

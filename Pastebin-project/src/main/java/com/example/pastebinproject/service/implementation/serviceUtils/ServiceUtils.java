@@ -80,7 +80,12 @@ public class ServiceUtils {
     }
 
     public static String makePasswordPretty(Bin bin) {
-        return bin.getPassword().replace(" ", "_");
+        String binPassword = bin.getPassword();
+        if (binPassword != null) {
+            return bin.getPassword().replace(" ", "_");
+        }
+
+        return null;
     }
 
 
