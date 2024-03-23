@@ -3,7 +3,7 @@ inspired by - https://pastebin.com/
 
 _Pastebin_ - приложение в котором пользователи могут создавать обычные _блоки текста_, сохранять их в системе, и делиться этими _ссылками (текстом)_ с другими пользователями по Сети.
 
-![Context Diagram (initial)](https://github.com/alibekbirlikbai/Pastebin-project/assets/87764579/517dd490-5d0c-4fba-b80a-07d442a025fa)
+![Context Diagram (general_v1 0 0)](https://github.com/alibekbirlikbai/Pastebin-project/assets/87764579/3caeb493-6042-4744-81ae-c7a066ff2595)
 
 
 ---
