@@ -9,7 +9,7 @@ _Pastebin_ - приложение в котором пользователи м�
 ---
 
 
-## Features
+## Features (by versions)
 <details>
   <summary><i>*v1.0.0 (краткое описание: Pastebin-project MVP)</i></summary>
 
@@ -37,7 +37,7 @@ _Pastebin_ - приложение в котором пользователи м�
   <summary><i>[Upcoming] v1.2.0 (краткое описание: Cloud implementation)</i></summary>
 
 - [ ] 8. **[Tech-feature]** Реализация сохранения контента в настоящее Облако (замена Cloud-Simulation);
-- [ ] 9. **[Tech-feature]** Реализация простого Front-end для проекта (Angular/ts);
+- [ ] 9. **[Tech-feature]** Реализация простого Front-end для проекта (Angular/TypeScript);
 - [ ] 10. **[Tech-feature]** Deployment проекта в Интернете;
 
 </details>
@@ -56,8 +56,8 @@ _Pastebin_ - приложение в котором пользователи м�
 > - техническое описание основных _Классов_, _API-контроллеров (endpoints)_, _Пакетов_; _*<u>(на момент этого релиза)</u>_
 
 
-[*v1.0.0 (Pastebin-project MVP)](https://github.com/alibekbirlikbai/Pastebin-project/releases/tag/v1.0.0) (Основная Документация Проекта) <br>
-[v1.1.0](https://github.com/alibekbirlikbai/Pastebin-project/releases/tag/v1.1.0) _**(--актуальная версия--)**_
+1. [*v1.0.0 (Pastebin-project MVP)](https://github.com/alibekbirlikbai/Pastebin-project/releases/tag/v1.0.0) (Основная Документация Проекта) <br>
+2. [v1.1.0](https://github.com/alibekbirlikbai/Pastebin-project/releases/tag/v1.1.0) _**(--актуальная версия--)**_
 
 
 ---
