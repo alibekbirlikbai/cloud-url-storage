@@ -1,6 +1,7 @@
 package com.example.pastebinproject.service.implementation;
 
 import com.example.pastebinproject.exception.BinCategoryException;
+import com.example.pastebinproject.external.google.drive.GoogleDriveService;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.model.BinCategory;
 import com.example.pastebinproject.repository.BinRepository;
@@ -32,9 +33,10 @@ public class ServiceImplement implements BinService {
             // автоинкремент id-объекта (merge объекта с таблицей)
             bin = ServiceUtils.mergeEntityAndTableValue(bin);
 
-            // Симуляция сохранения контента (Bin) в Cloud
-            //String fileName = CloudSimulation.storeBinInCloud(bin);
-            String fileName = null;
+
+            // Сохраняем Bin в Cloud
+            String fileName = GoogleDriveService.storeBinInCloud(bin);
+
 
             int hashOfBin = ServiceUtils.generateHashFromBin(bin, fileName);
             bin.setHash(hashOfBin);

@@ -1,60 +1,68 @@
 package com.example.pastebinproject.external.google.drive;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.example.pastebinproject.model.Bin;
+import com.example.pastebinproject.service.implementation.serviceUtils.CloudUtils;
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GoogleDriveService {
-    // Идентификатор (id) папки в Google Drive, в которой сохраняются файлы
-    public static String folderId = "1wHDTuOQ4zCNXBnJrPVemLk5Jb0jXFf2W";
+    // Подключение к Google Drive
+    static Drive drive;
 
-    // Путь к JSON файлу с ключом для Service Account
-    private static String serviceAccountFile = "Pastebin-project/src/main/resources/service-account-auth.json";
-
-    //  Это имя отображается в консоли разработчика Google Cloud Platform в списке авторизованных приложений
-    private static final String APPLICATION_NAME = "Pastebin-project";
-
-    // Тестируем Соединение к Google Drive
-    public static void _uploadFileToGoogleDrive() throws IOException {
-        // Инициализация учетных данных с помощью файла JSON
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(serviceAccountFile))
-                .createScoped(Collections.singleton(DriveScopes.DRIVE_FILE));
-
-        // Инициализация объекта Drive
-        Drive drive = new Drive.Builder(credential.getTransport(), credential.getJsonFactory(), credential)
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-
-        // Создание нового файла "test.txt" на сервере
-        String fileContent = "Hello, World!";
-        java.io.File serverFile = new java.io.File("test.txt");
-        try (FileOutputStream fos = new FileOutputStream(serverFile)) {
-            fos.write(fileContent.getBytes());
+    static {
+        try {
+            drive = GoogleDriveConnector.connectGoogleDrive();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        // Загрузка файла "test.txt" на Google Drive
+    public static String storeBinInCloud(Bin bin) throws IOException {
+        Map<String, java.io.File> fileMap = CloudUtils.createFile(bin);
+
+        fileUploadIntoCloud(fileMap, bin);
+
+        // return fileName
+        return fileMap.entrySet().iterator().next().getKey();
+    }
+
+
+
+
+    private static void fileUploadIntoCloud(Map<String, java.io.File> fileMap, Bin bin) throws IOException {
+        String fileName = fileMap.entrySet().iterator().next().getKey();
+        java.io.File serverFile = fileMap.entrySet().iterator().next().getValue();
+
+        // Загрузка файла на Google Drive
         File fileMetadata = new File();
-        fileMetadata.setName("test.txt");
-        fileMetadata.setParents(Collections.singletonList(folderId));
+        fileMetadata.setName(fileName);
+        fileMetadata.setParents(Collections.singletonList(GoogleDriveConnector.folderId));
         FileContent mediaContent = new FileContent("text/plain", serverFile);
         File file = drive.files().create(fileMetadata, mediaContent)
                 .setFields("id")
                 .execute();
+
+        bin.setCloud_id(file.getId());
         System.out.println("File ID: " + file.getId());
 
-        // Удаление файла "test.txt" с сервера
+        // Удаление файла с сервера
         serverFile.delete();
     }
+
+
+
+    public static void deleteExpiredBinFromCloud(Bin bin) {}
+
+
+    private static void getTextFromFile(String fileName) {}
+
 
 }

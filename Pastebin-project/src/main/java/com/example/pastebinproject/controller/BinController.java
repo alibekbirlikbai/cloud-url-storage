@@ -93,11 +93,11 @@ public class BinController {
     }
 
 
-    @GetMapping("/test-cloud-connectivity")
-    public ResponseEntity<?> testCloud() throws IOException {
-        GoogleDriveService._uploadFileToGoogleDrive();
-
-        return ResponseEntity.ok("file has been created");
-    }
+//    @GetMapping("/test-cloud-connectivity")
+//    public ResponseEntity<?> testCloud() throws IOException {
+//        GoogleDriveService._uploadFileToGoogleDrive();
+//
+//        return ResponseEntity.ok("file has been created");
+//    }
 
 }
