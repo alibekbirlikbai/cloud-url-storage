@@ -37,13 +37,16 @@ public class BinController {
                     .append('\n')
                     .append("[Content] = " + savedBin.getContent())
                     .append('\n')
+                    .append("   [Category] = " + savedBin.getCategory())
+                    .append('\n')
+                    .append("   [Cloud ID] = " + savedBin.getCloud_id())
+                    .append('\n')
+                    .append('\n')
                     .append("[URL] = " + savedBin.getURL())
                     .append('\n')
-                    .append("[URL expire at] = " + savedBin.getExpiry_time())
+                    .append("   [URL expire at] = " + savedBin.getExpiry_time())
                     .append('\n')
-                    .append("[URL password] = " + savedBin.getPassword())
-                    .append('\n')
-                    .append("[Category] = " + savedBin.getCategory());
+                    .append("   [URL password] = " + savedBin.getPassword());
 
             ControllerUtils.logEnd();
             return ResponseEntity.ok(stringResponse);
@@ -66,7 +69,7 @@ public class BinController {
 
         if (bin != null) {
             if (bin.isExpired() == false && bin.isPassword_match() == true) {
-                return "Bin from this URL = {" + bin.getContent() + "}";
+                return "Bin from this URL = [" + bin.getContent() + "]";
             } else if (bin.isPassword_match() == false) {
                 return "--This URL has password--";
             } else {
