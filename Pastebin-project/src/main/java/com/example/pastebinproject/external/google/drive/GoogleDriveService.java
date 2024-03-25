@@ -55,6 +55,12 @@ public class GoogleDriveService {
         }
     }
 
+    public static void deleteBinFromCloud(String fileId) throws IOException {
+        drive.files().delete(fileId).execute();
+        System.out.println("File with ID " + fileId + " has been deleted successfully.");
+    }
+
+
 
 
 
@@ -77,13 +83,4 @@ public class GoogleDriveService {
         // Удаление файла с сервера
         serverFile.delete();
     }
-
-
-
-    public static void deleteExpiredBinFromCloud(Bin bin) {}
-
-
-    private static void getTextFromFile(String fileName) {}
-
-
 }

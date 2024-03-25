@@ -93,15 +93,15 @@ public class ServiceUtils {
 
 
 
-    private static Bin checkURLforExpired(Bin bin) {
+    private static Bin checkURLforExpired(Bin bin) throws IOException {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (currentTime.isAfter(bin.getExpiry_time())) {
             bin.setExpired(true);
             binRepository.save(bin);
 
-            // Delete File from Cloud (file-directory)
-            // CloudSimulation.deleteExpiredBinFromCloud(textBin);
+            // Удаление Bin из Cloud
+            GoogleDriveService.deleteBinFromCloud(bin.getCloud_id());
         }
 
         return bin;
