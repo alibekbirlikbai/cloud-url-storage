@@ -1,12 +1,11 @@
 package com.example.pastebinproject.controller;
 
 import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
+import com.example.pastebinproject.external.google.drive.GoogleDriveService;
 import com.example.pastebinproject.exception.BinCategoryException;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.service.BinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -91,6 +90,14 @@ public class BinController {
         ControllerUtils.logStart(request);
 
         return service.searchByCategory(category);
+    }
+
+
+    @GetMapping("/test-cloud-connectivity")
+    public ResponseEntity<?> testCloud() throws IOException {
+        GoogleDriveService._uploadFileToGoogleDrive();
+
+        return ResponseEntity.ok("file has been created");
     }
 
 }

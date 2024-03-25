@@ -31,6 +31,7 @@ public class ServiceImplement implements BinService {
         if (isValidBin(bin) && isCategoryValid(bin)) {
             // автоинкремент id-объекта (merge объекта с таблицей)
             bin = ServiceUtils.mergeEntityAndTableValue(bin);
+
             // Симуляция сохранения контента (Bin) в Cloud
             //String fileName = CloudSimulation.storeBinInCloud(bin);
             String fileName = null;
