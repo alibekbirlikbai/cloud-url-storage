@@ -149,7 +149,8 @@ public class ServiceUtils {
     }
 
     private static void iterateThroughCloudRecords(Bin bin) throws IOException {
-        Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
+        //Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
+        Map<String, String> cloudRecords = null;
 
         for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
             int hashOfCurrentRecord = Objects.hashCode(element.getKey());
