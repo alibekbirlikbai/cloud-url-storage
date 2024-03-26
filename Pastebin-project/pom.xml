@@ -17,6 +17,7 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!-- Project v1.0.0 + v1.1.0 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -46,10 +47,33 @@
             <scope>runtime</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+
+
+        <!-- Project v1.2.0 -->
+        <!-- Google API client -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+        <!-- Google OAuth client (Jetty) -->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.34.1</version>
+        </dependency>
+
+        <!-- Google Drive API -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-drive</artifactId>
+            <version>v3-rev20220815-2.0.0</version>
         </dependency>
 
     </dependencies>

@@ -37,6 +37,9 @@ public class Bin {
     @Transient
     private boolean password_match = true;
 
+    @Column
+    private String cloud_id;
+
     public long getId() {
         return id;
     }
@@ -109,6 +112,14 @@ public class Bin {
         this.password_match = password_match;
     }
 
+    public String getCloud_id() {
+        return cloud_id;
+    }
+
+    public void setCloud_id(String cloud_id) {
+        this.cloud_id = cloud_id;
+    }
+
     @Override
     public String toString() {
         return "Bin{" +
@@ -120,6 +131,8 @@ public class Bin {
                 ", URL='" + URL + '\'' +
                 ", category='" + category + '\'' +
                 ", password='" + password + '\'' +
+                ", password_match=" + password_match +
+                ", cloud_id='" + cloud_id + '\'' +
                 '}';
     }
 }

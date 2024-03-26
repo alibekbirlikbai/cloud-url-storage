@@ -1,6 +1,7 @@
 package com.example.pastebinproject.service.implementation.serviceUtils;
 
 import com.example.pastebinproject.Utils.DevelopmentServices;
+import com.example.pastebinproject.external.google.drive.GoogleDriveService;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.repository.BinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,15 +93,15 @@ public class ServiceUtils {
 
 
 
-    private static Bin checkURLforExpired(Bin bin) {
+    private static Bin checkURLforExpired(Bin bin) throws IOException {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (currentTime.isAfter(bin.getExpiry_time())) {
             bin.setExpired(true);
             binRepository.save(bin);
 
-            // Delete File from Cloud (file-directory)
-            // CloudSimulation.deleteExpiredBinFromCloud(textBin);
+            // Удаление Bin из Cloud
+            GoogleDriveService.deleteBinFromCloud(bin.getCloud_id());
         }
 
         return bin;
@@ -139,28 +140,24 @@ public class ServiceUtils {
 
     private static Bin getContentFromBin(int hashOfBin) throws IOException {
         Bin bin = binRepository.findByHash(hashOfBin);
-
-        // Получаем значение текста внутри файла, Хэш-код которого соответствует переданному по URL (ссылка на Bin)
-        // значение инициализируется ЛОКАЛЬНО (на уровне Java),
-        // (на БД поле текста Bin -> @Transient)
-        iterateThroughCloudRecords(bin);
-
+        bin.setContent(GoogleDriveService.getBinFromCloud(bin.getCloud_id()));
         return bin;
     }
 
-    private static void iterateThroughCloudRecords(Bin bin) throws IOException {
-        Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
-
-        for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
-            int hashOfCurrentRecord = Objects.hashCode(element.getKey());
-
-            if (hashOfCurrentRecord == bin.getHash()) {
-                bin.setContent(element.getValue());
-
-//                //log
-//                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHash() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
-//                System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
-            }
-        }
-    }
+//    private static void iterateThroughCloudRecords(Bin bin) throws IOException {
+//        //Map<String, String> cloudRecords = CloudSimulation.getListOfAllAvailableFiles();
+//        Map<String, String> cloudRecords = null;
+//
+//        for (Map.Entry<String, String> element : cloudRecords.entrySet()) {
+//            int hashOfCurrentRecord = Objects.hashCode(element.getKey());
+//
+//            if (hashOfCurrentRecord == bin.getHash()) {
+//                bin.setContent(element.getValue());
+//
+////                //log
+////                System.out.println(DevelopmentServices.consoleMessage() + "(HASH MANUAL CHECK) " + bin.getHash() + "(hash from -> URL)" + " == " + hashOfCurrentRecord + "(converted hash of record (file) from -> Cloud (file directory))");
+////                System.out.println(DevelopmentServices.consoleMessage() + "Text of Bin from provided URL: " + element.getValue());
+//            }
+//        }
+//    }
 }

@@ -1,12 +1,11 @@
 package com.example.pastebinproject.controller;
 
 import com.example.pastebinproject.controller.controllerUtils.ControllerUtils;
+import com.example.pastebinproject.external.google.drive.GoogleDriveService;
 import com.example.pastebinproject.exception.BinCategoryException;
 import com.example.pastebinproject.model.Bin;
 import com.example.pastebinproject.service.BinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +37,16 @@ public class BinController {
                     .append('\n')
                     .append("[Content] = " + savedBin.getContent())
                     .append('\n')
+                    .append("   [Category] = " + savedBin.getCategory())
+                    .append('\n')
+                    .append("   [Cloud ID] = " + savedBin.getCloud_id())
+                    .append('\n')
+                    .append('\n')
                     .append("[URL] = " + savedBin.getURL())
                     .append('\n')
-                    .append("[URL expire at] = " + savedBin.getExpiry_time())
+                    .append("   [URL expire at] = " + savedBin.getExpiry_time())
                     .append('\n')
-                    .append("[URL password] = " + savedBin.getPassword())
-                    .append('\n')
-                    .append("[Category] = " + savedBin.getCategory());
+                    .append("   [URL password] = " + savedBin.getPassword());
 
             ControllerUtils.logEnd();
             return ResponseEntity.ok(stringResponse);
@@ -67,7 +69,7 @@ public class BinController {
 
         if (bin != null) {
             if (bin.isExpired() == false && bin.isPassword_match() == true) {
-                return "Bin from this URL = {" + bin.getContent() + "}";
+                return "Bin from this URL = [" + bin.getContent() + "]";
             } else if (bin.isPassword_match() == false) {
                 return "--This URL has password--";
             } else {
@@ -92,5 +94,13 @@ public class BinController {
 
         return service.searchByCategory(category);
     }
+
+
+//    @GetMapping("/test-cloud-connectivity")
+//    public ResponseEntity<?> testCloud() throws IOException {
+//        GoogleDriveService._uploadFileToGoogleDrive();
+//
+//        return ResponseEntity.ok("file has been created");
+//    }
 
 }
