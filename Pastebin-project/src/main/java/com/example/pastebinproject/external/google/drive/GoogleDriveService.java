@@ -8,6 +8,7 @@ import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.io.ByteArrayOutputStream;
@@ -82,5 +83,22 @@ public class GoogleDriveService {
 
         // Удаление файла с сервера
         serverFile.delete();
+    }
+
+
+    public static String testCloudConnectivity() {
+        try {
+            // Create a test Bin object with test content
+            Bin testBin = new Bin();
+            testBin.setContent("Some test message");
+            testBin.setExpiry_time(LocalDateTime.parse("2024-05-20T23:40:00"));
+            testBin.setCategory("no_category");
+            testBin.setPassword(null); // Assuming that password can be null
+            String fileId = storeBinInCloud(testBin); // Attempt to upload the test file
+            return "File has been created with ID: " + fileId; // Return success message with file ID
+        } catch (IOException e) {
+            // Handle exceptions appropriately
+            return "Failed to upload file to Google Drive: " + e.getMessage(); // Return error message
+        }
     }
 }

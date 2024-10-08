@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/api/v1/pastbin")
+@RequestMapping("/api/v1/cloud-url-storage")
 public class BinController {
     private BinService service;
 
@@ -29,27 +29,13 @@ public class BinController {
     public ResponseEntity<?> createBin(@RequestBody Bin bin,
                             HttpServletRequest request) {
         ControllerUtils.logStart(request);
-        StringBuilder stringResponse = new StringBuilder();
 
         try {
             Bin savedBin = service.saveBin(bin, request);
-            stringResponse.append("Your Bin was successfully saved!")
-                    .append('\n')
-                    .append("[Content] = " + savedBin.getContent())
-                    .append('\n')
-                    .append("   [Category] = " + savedBin.getCategory())
-                    .append('\n')
-                    .append("   [Cloud ID] = " + savedBin.getCloud_id())
-                    .append('\n')
-                    .append('\n')
-                    .append("[URL] = " + savedBin.getURL())
-                    .append('\n')
-                    .append("   [URL expire at] = " + savedBin.getExpiry_time())
-                    .append('\n')
-                    .append("   [URL password] = " + savedBin.getPassword());
+
 
             ControllerUtils.logEnd();
-            return ResponseEntity.ok(stringResponse);
+            return ResponseEntity.ok("text successfully saved");
         } catch (IOException ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сохранения записи в базе данных");
         } catch (BinCategoryException customException) {
@@ -69,7 +55,7 @@ public class BinController {
 
         if (bin != null) {
             if (bin.isExpired() == false && bin.isPassword_match() == true) {
-                return "Bin from this URL = [" + bin.getContent() + "]";
+                return bin.getContent();
             } else if (bin.isPassword_match() == false) {
                 return "--This URL has password--";
             } else {
@@ -96,11 +82,11 @@ public class BinController {
     }
 
 
-//    @GetMapping("/test-cloud-connectivity")
-//    public ResponseEntity<?> testCloud() throws IOException {
-//        GoogleDriveService._uploadFileToGoogleDrive();
-//
-//        return ResponseEntity.ok("file has been created");
-//    }
+    @GetMapping("/test-cloud-connectivity")
+    public ResponseEntity<?> testCloud() throws IOException {
+        GoogleDriveService.testCloudConnectivity();
+
+        return ResponseEntity.ok("file has been created");
+    }
 
 }
